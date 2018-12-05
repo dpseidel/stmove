@@ -6,8 +6,10 @@ Description: A system for building reports containing a minimal set of spatial,
     You provide the data, and stmove will build a report highlighting basic
     distributions, statistics, visualizations, and home range constructions for your 
     trajectory. 
-Authors@R:  person("Dana", "Seidel", , "dpseidel@berkeley.edu", c("aut", "cre")),
- person("Eric", "Dougherty", , "dougherty.eric@berkeley.edu", c("aut", "cre"))
+Authors@R: c(
+    person("Dana", "Seidel", ,"dpseidel@berkeley.edu", c("aut", "cre")),
+    person("Eric", "Dougherty", ,"dougherty.eric@berkeley.edu", c("aut"))
+    )
 License: GPL-3
 URL: https://github.com/dpseidel/stmove
 BugReports: https://github.com/dpseidel/stmove/issues
