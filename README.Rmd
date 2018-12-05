@@ -42,8 +42,6 @@ The primary function of this package is `build_report` which, given a clean regu
 
 Once these are done, one can then pursue various kinds of analysis that address questions of interest (e.g., GLM models of location and landscape, HMM modeling, step section analysis), but this package strives to set a standard for what is minimally needed before embarking on such analyses.
 
-The goal of stmove is to ...
-
 ## Installation
 
 stmove is in active development. You can install the current version of stmove with:

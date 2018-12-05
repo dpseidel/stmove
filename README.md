@@ -61,8 +61,6 @@ landscape, HMM modeling, step section analysis), but this package
 strives to set a standard for what is minimally needed before embarking
 on such analyses.
 
-The goal of stmove is to …
-
 ## Installation
 
 stmove is in active development. You can install the current version of
