@@ -18,8 +18,16 @@ LazyData: true
 Depends:
  R (>= 2.10)
 Suggests: 
-    testthat
+    lunar,
+    rmarkdown, 
+    testthat,
+    vdiffr
 Imports:
-    adehabitatLT
+    adehabitatLT,
+    dplyr,
+    lubridate,
+    RcppRoll,
+    TTR,
+    zoo
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1

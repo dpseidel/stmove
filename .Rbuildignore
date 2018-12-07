@@ -1,6 +1,6 @@
 ^data-raw$
 ^README\.Rmd$
-LICENSE
 ^LICENSE\.md$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^report\.Rmd$

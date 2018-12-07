@@ -1,44 +1,61 @@
 #' Basic Distributions
 #'
+#' The first step to any movement analysis is to extract the step length and turning angle
+#' distributions of trajectory. These functions will calculate step length and relative
+#' turning angles for a given trajectory and plot associated histograms.
+#'
 #' @param x a dataframe with columns: x, y, date, and id (optional)
-#' @return an ltraj object and a plot of the turning angle or step length distribution
+#' @param plot a logical indicating whether or not to return a histogram of the distribution
+#' @return a numeric vector and (optionally) a plot of the turning angle or step length distribution
 #' @export
-#' @importFrom adehabitatLT dl ld
+#' @importFrom adehabitatLT dl
 #' @importFrom graphics hist
 #' @examples
 #' \donttest{
 #' ss_dist(AG195)
 #' ta_dist(AG195)
 #' }
-#'
-ss_dist <- function(x) {
+#' 
+ss_dist <- function(x, plot = T) {
 
-  # do we want to handle multiple animals at once. What will that mean for plots?
-  # do we want to return a vector? a data frame? an ltraj?
+  # we could make these calculations ourselves without pulling in adehabitat
+  # we should benchmark what is faster.
 
   # may want to add error handling for irregular data
   traj <- adehabitatLT::dl(x)
+  dt <- traj[[1]]$dt[1]
+  dist <- traj[[1]]$dist
 
-  hist(
-    x = traj[[1]]$dist,
-    xlab = "Step Length",
-    main = paste0("Step Length Distribution \n dt = ", traj[[1]]$dt[1], " secs")
-  )
-  return(traj)
+  if (plot == T) {
+    hist(
+      x = dist,
+      xlab = "Step Length",
+      main = paste0("Step Length Distribution \n dt = ", dt, " secs")
+    )
+  }
+
+  return(dist)
 }
 
 
-ta_dist <- function(x) {
+#' @export
+#' @rdname ss_dist
+ta_dist <- function(x, plot = T) {
 
   # include option for rel.angle v. abs.angle?
 
   traj <- adehabitatLT::dl(x)
+  dt <- traj[[1]]$dt[1]
+  ang <- traj[[1]]$rel.angle
 
-  hist(
-    x = traj[[1]]$abs.angle,
-    xlab = "Turning Angle",
-    main = paste0("(Absolute) Turning Angle Distribution \n dt = ", traj[[1]]$dt[1], " secs")
-  )
 
-  return(traj)
+  if (plot == T) {
+    hist(
+      x = ang,
+      xlab = "Turning Angle",
+      main = paste0("(Relative) Turning Angle Distribution \n dt = ", dt, " secs")
+    )
+  }
+
+  return(ang)
 }

@@ -1,0 +1,63 @@
+---
+title: "My Basic Movement Report"
+subtitle: "created with pkg stmove" 
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: pdf_document
+params:
+  df: NA
+  seas: NA
+  lunar: NA
+  
+---
+
+# Visualize my trajectory
+
+```{r}
+plot(params$df$x, params$df$y, type = "p", )
+```
+
+# My distributions:
+## Step Size
+
+```{r}
+ss <- ss_dist(x = params$df)
+```
+
+## Turning Angle
+
+```{r}
+ta <- ta_dist(x = params$df)
+```
+
+# Basic Statistical Summary
+
+## Fine Scale Sliding Window
+
+```{r}
+
+```
+
+## Diurnal Cycle
+
+```{r}
+
+```
+
+`r if params$lunar == T  '## Lunar Cycle'`
+
+```{r eval = lunar}
+
+```
+
+`r if !is.null(params$seas) '## Seasonal Cycle'`
+
+```{r eval = lunar}
+
+```
+
+# Visualizing Periodicity
+
+# Constructing Home Ranges
+
+### Suggested Next Steps
+

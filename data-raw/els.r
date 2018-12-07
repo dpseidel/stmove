@@ -8,6 +8,8 @@ clean_els <- read_csv("../Elephants/Data/clean_allels.csv", col_types = "ddTdddd
 # filter out 2 elephants, of different fix rates, for all of 2010
 traj <- filter(clean_els, id %in% c("AG195", "AG268"), year(date) == 2010) %>% adehabitatLT::dl(.)
 
+AG268_raw <- ld(traj[2])
+write_csv(AG268_raw, "data-raw/AG268_raw.csv")
 
 # regularize
 els <- c(
@@ -19,8 +21,9 @@ AG195 <- els[[1]]
 AG268 <- els[[2]]
 
 write_csv(AG195, "data-raw/AG195.csv")
-write_csv(AG268, "data-raw/AG268.csv")
+write_csv(AG195, "data-raw/AG195.csv")
 
 # export
 usethis::use_data(AG195, overwrite = T)
 usethis::use_data(AG268, overwrite = T)
+usethis::use_data(AG268_raw, overwrite = T)

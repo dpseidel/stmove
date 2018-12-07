@@ -2,18 +2,25 @@
 % Please edit documentation in R/distributions.r
 \name{ss_dist}
 \alias{ss_dist}
+\alias{ta_dist}
 \title{Basic Distributions}
 \usage{
-ss_dist(x)
+ss_dist(x, plot = T)
+
+ta_dist(x, plot = T)
 }
 \arguments{
 \item{x}{a dataframe with columns: x, y, date, and id (optional)}
+
+\item{plot}{a logical indicating whether or not to return a histogram of the distribution}
 }
 \value{
-an ltraj object and a plot of the turning angle or step length distribution
+a numeric vector and (optionally) a plot of the turning angle or step length distribution
 }
 \description{
-Basic Distributions
+The first step to any movement analysis is to extract the step length and turning angle
+distributions of trajectory. These functions will calculate step length and relative
+turning angles for a given trajectory and plot associated histograms.
 }
 \examples{
 \donttest{
