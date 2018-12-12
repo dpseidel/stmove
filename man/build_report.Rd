@@ -4,12 +4,17 @@
 \alias{build_report}
 \title{Build a report with basic spatio-temporal movement computations}
 \usage{
-build_report(file, df)
+build_report(file, df, stats = c("rolling", "diurnal"),
+  construct = c("klocoh"), proj4, na.approx = T, seas = NULL)
 }
 \arguments{
 \item{file}{a file name and path.}
 
-\item{df}{a dataframe containing columns x, y, date representing relocations in space and time.}
+\item{stats}{}
+
+\item{seas}{a named numeric vector including the start date of each season
+indicated by the Julian day (see \code{lubridate::yday} for easy conversion).
+Required if \code{type == "seasonal"}}
 }
 \description{
 Build a report with basic spatio-temporal movement computations

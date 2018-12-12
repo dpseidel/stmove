@@ -4,7 +4,7 @@
 #' @param x a dataframe containing columns "x", "y", and "date
 #' @param na.approx a logical indicating whether or not the user wants to interpolate NAs, see details
 #' @export
-
+#'
 rolling_stats <- function(x, na.approx = F) {
   traj <- dl(x)[[1]]
   dt <- traj$dt[1] # assuming completely regular trajectory, this is safe.
@@ -69,18 +69,18 @@ interval_stats <- function(x, type = "diurnal", seas = NULL) {
     }
     # may want to allow user specification of "shift" parameter to adjust exactly to local time.
 
-    traj$phase <- lunar.phase(traj$date, name = T)
+    traj$phase <- lunar::lunar.phase(traj$date, name = T)
     # the following need specific testing, and to be cleaned up!
-    full <- unique(floor_date(traj[traj$phase == "Full", "date"], "1 day"))[
-      c(TRUE, (diff(unique(floor_date(traj[traj$phase == "Full", "date"], "1 day"))) != 1))
+    full <- unique(lubridate::floor_date(traj[traj$phase == "Full", "date"], "1 day"))[
+      c(TRUE, (diff(unique(lubridate::floor_date(traj[traj$phase == "Full", "date"], "1 day"))) != 1))
     ]
-    new <- unique(floor_date(traj[traj$phase == "New", "date"], "1 day"))[
-      c(TRUE, (diff(unique(floor_date(traj[traj$phase == "New", "date"], "1 day"))) != 1))
+    new <- unique(lubridate::floor_date(traj[traj$phase == "New", "date"], "1 day"))[
+      c(TRUE, (diff(unique(lubridate::floor_date(traj[traj$phase == "New", "date"], "1 day"))) != 1))
     ]
-    interval_starts <- yday(c(traj$date[1], sort(c(full, new)), traj$date[nrow(traj)]))
+    interval_starts <- lubridate::yday(c(traj$date[1], sort(c(full, new)), traj$date[nrow(traj)]))
 
-    traj$interval_start <- cut(yday(traj$date),
-      breaks = interval_starts,
+    traj$interval_start <- cut(lubridate::yday(traj$date),
+      breaks = unique(interval_starts),  # needs testing
       right = F, include.lowest = T
     )
   }
@@ -119,6 +119,7 @@ interval_stats <- function(x, type = "diurnal", seas = NULL) {
   # For future reference:
   # .colMeans provides a nice way to do means this without tidyverse
   # mean_dist = .colMeans(dist, 12 * n_fixes_hr, length(traj$dist) / (12 * n_fixes_hr), na.rm = T)
+  # sd will require more manipulation
 }
 
 

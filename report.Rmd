@@ -5,15 +5,29 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: pdf_document
 params:
   df: NA
+  stats: NA
+  na.approx: NA
   seas: NA
-  lunar: NA
-  
+  construct: NA
+  proj4: NA
 ---
+
+```{r setup, include = F}
+
+construct <- (!is.null(params$construct))
+klocoh <-  "klocoh" %in% tolower(params$construct)
+akdea <- "akde" %in% tolower(params$construct)
+rolling <- ("rolling" %in% params$stats)
+diurnal <- ("diurnal" %in% params$stats)
+lunar <- ("lunar" %in% params$stats)
+seasonal <- ("seasonal" %in% params$stats)
+
+```
 
 # Visualize my trajectory
 
 ```{r}
-plot(params$df$x, params$df$y, type = "p", )
+plot(params$df$x, params$df$y, type = "p")
 ```
 
 # My distributions:
@@ -31,33 +45,69 @@ ta <- ta_dist(x = params$df)
 
 # Basic Statistical Summary
 
-## Fine Scale Sliding Window
+`r if (rolling) '## Fine Scale Sliding Window'`
 
-```{r}
-
+```{r eval = rolling, include = rolling}
+rolling_stats(params$df, na.approx = params$na.approx)
 ```
 
-## Diurnal Cycle
+`r if (diurnal) '## Diurnal Cycle'`
 
-```{r}
+```{r eval = diurnal, include = diurnal}
+interval_stats(params$df)
 
+# # We need to make some decisions about how to plot these things... 
+# purrr::pwalk(list(y = stats[, -1], lab = names(stats[, -1])), function(y, lab) {
+#   print(ggplot2::qplot(y, x = stats$interval_start, xlab = "Time", ylab = lab, 
+#                        geom = c("path"), 
+#                        main = paste("Diurnal Interval Plot of", lab)))
+# })
 ```
 
-`r if params$lunar == T  '## Lunar Cycle'`
+`r if (lunar) '## Lunar Cycle'`
 
-```{r eval = lunar}
-
+```{r eval = lunar, include = lunar}
+interval_stats(params$df, type = "lunar")
 ```
 
-`r if !is.null(params$seas) '## Seasonal Cycle'`
+`r if (seasonal) '## Seasonal Cycle'`
 
-```{r eval = lunar}
-
+```{r eval = seasonal, include = seasonal}
+interval_stats(params$df, type = "seasonal", seas = params$seas)
 ```
 
 # Visualizing Periodicity
 
-# Constructing Home Ranges
+`r if (construct) '# Constructing Home Ranges'`
 
-### Suggested Next Steps
+`r if (klocoh) '## A k-LoCoh Home Range'`
+
+```{r, eval = klocoh , include = klocoh}
+
+locoh <- construct(params$df, type = "klocoh", proj4 = params$proj4) 
+
+```
+
+
+\newpage
+# Suggested Next Steps
+
+This report provides a first-pass look at your trajectories and patterns you see here
+may be further investigated in any number of ways. Below we suggest some common 
+next questions and steps and associated packages that could help you begin to address them. 
+Also see suggestions from Seidel et al. 2019, Appendix C of Seidel et al. 2018,
+or tutorials from the 2018 Movement Ecology in R workshop hosted [here](https://www.danaseidel.com/MovEco-R-Workshop/).
+
+- Habitat Selection Analysis
+    - the `sf` package offers ...
+    - the `raster` package offers ...
+    - the `lme4` package is useful for fitting generalized linear models with fixed or random effects
+- Hidden Markov Models
+    - `momentuHMM`
+    - `moveHmm`
+- Dynamic Interaction between individuals?
+    - `wildlifeDI`
+
+Also consider the numerous analyses made available by the extentive "adehabitat" packages:
+`adehabitatLT`, `adehabitatHR`, `adehabitatMA`, `adehabitatHS` and their indepth vignettes. 
 
