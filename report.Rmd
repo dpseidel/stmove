@@ -57,6 +57,10 @@ ta <- ta_dist(x = params$df)
 
 # Visualizing Periodicity
 
+```{r}
+dist_wavelet(x = params$df)
+```
+
 # Constructing Home Ranges
 
 ### Suggested Next Steps
