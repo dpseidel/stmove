@@ -49,5 +49,5 @@ construct <- function(df, type = c("klocoh", "akde"), proj4) {
     plot(UD, level.UD = c(.25, .5, .95))
   }
 
-  return(list(lhs, UD))
+  return(Filter(f = length, x = list(lhs, UD)))
 }
