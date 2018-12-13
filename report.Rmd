@@ -5,63 +5,156 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: pdf_document
 params:
   df: NA
+  stats: NA
+  na.approx: NA
   seas: NA
-  lunar: NA
-  
+  construct: NA
+  proj4: NA
+  wavelet: NA
 ---
+
+```{r setup, include = F}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  echo = FALSE
+)
+
+library(patchwork)
+
+construct <- (!is.null(params$construct))
+klocoh <- "klocoh" %in% tolower(params$construct)
+akde <- "akde" %in% tolower(params$construct)
+rolling <- ("rolling" %in% params$stats)
+diurnal <- ("diurnal" %in% params$stats)
+lunar <- ("lunar" %in% params$stats)
+seasonal <- ("seasonal" %in% params$stats)
+```
 
 # Visualize my trajectory
 
 ```{r}
-plot(params$df$x, params$df$y, type = "p", )
+plot(params$df$x, params$df$y, type = "p")
 ```
 
-# My distributions:
-## Step Size
+# Distributions:
 
-```{r}
+```{r, fig.height = 4}
 ss <- ss_dist(x = params$df)
-```
-
-## Turning Angle
-
-```{r}
 ta <- ta_dist(x = params$df)
 ```
 
 # Basic Statistical Summary
 
-## Fine Scale Sliding Window
+`r if (rolling) '## Fine Scale Sliding Window'`
 
-```{r}
+```{r eval = rolling, messages = F, fig.height = 4}
+roll <<- rolling_stats(params$df, na.approx = params$na.approx)
+
+p1 <- ggplot(roll, aes(date, y = mean_dist)) +
+  geom_point(na.rm = T) + geom_smooth(na.rm = T)
+
+p2 <- ggplot(roll, aes(date, y = mean_ang)) +
+  geom_point(na.rm = T) + geom_smooth(na.rm = T)
+
+
+p1 + p2 + plot_annotation("Mean Step Size & Turning Angle on a Rolling Interval")
+
+ggplot(roll, aes(date)) +
+  geom_smooth(aes(y = acf_ang, color = "Relative Angle"), na.rm = T) +
+  geom_smooth(aes(y = acf_dist, color = "Step Size"), na.rm = T) +
+  geom_smooth(aes(y = ccf, color = "Cross Correlation"), na.rm = T) +
+  ylab("Correlation") +
+  ggtitle("Lag 1 Auto and Cross Correlations in Turning Angle & Step Size",
+    subtitle = "Rolling Window"
+  )
+```
+
+`r if (diurnal) '## Diurnal Cycle'`
+
+```{r eval = diurnal, message = FALSE}
+diurnal_stats <<- interval_stats(params$df)
+
+# We need to make some decisions about how to plot these things...
+plots <- purrr::map(
+  names(diurnal_stats)[c(2, 5, 4, 7, 8)],
+  function(x){
+    y <- sym(x)
+  p <- ggplot(
+    diurnal_stats,
+    aes(interval_start, y = !!y,  color = ifelse(hour(interval_start) == 0,
+        "0:00 - 12:00",
+        "12:00 - 24:00"
+      )
+    )
+  ) + geom_point(na.rm = T, size = .3) + geom_smooth(na.rm = T)  +
+    xlab(NULL) +
+theme(axis.text.x = element_text(angle = 25, vjust = .5))
+  
+  if(x == "acf_ang"){
+    return(p + scale_color_discrete("Time of Day") + 
+             theme(legend.position = "bottom"))
+  } else{
+     return(p + guides(color = "none"))
+  }
+  }
+    )
+
+{plots[[1]] + plots[[2]]} - {plots[[3]] + plots[[4]]+ plots[[5]]} + plot_layout(nrow = 2) +
+  plot_annotation(title = "Diurnal Interval Statistics")
 
 ```
 
-## Diurnal Cycle
-
-```{r}
-
-```
-
-`r if params$lunar == T  '## Lunar Cycle'`
+`r if (lunar) '## Lunar Cycle'`
 
 ```{r eval = lunar}
+lunar_stats <<- interval_stats(params$df, type = "lunar")
+```
+
+`r if (seasonal) '## Seasonal Cycle'`
+
+```{r eval = seasonal}
+seasonal_stats <<- interval_stats(params$df, type = "seasonal", seas = params$seas)
+```
+
+`r if (params$wavelet) '# Visualizing Periodicity'`
+
+```{r eval= params$wavelet}
 
 ```
 
-`r if !is.null(params$seas) '## Seasonal Cycle'`
+`r if (construct) '# Space Use Constructions'`
 
-```{r eval = lunar}
+`r if (klocoh) '## A k-LoCoh hull set'`
 
+```{r, eval = klocoh}
+locoh <<- construct(params$df, type = "klocoh", proj4 = params$proj4)
 ```
 
-# Visualizing Periodicity
-
-```{r}
-dist_wavelet(x = params$df)
+`r if (akde) '## An autocorrelated kernel density estimation'`
+```{r, eval = akde}
+akde <<- construct(params$df, type = "akde", proj4 = params$proj4)
 ```
+
+\newpage
+# Suggested Next Steps
+
+This report provides a first-pass look at your trajectories and patterns you see here
+may be further investigated in any number of ways. Below we suggest some common 
+next questions and steps and associated packages that could help you begin to address them. 
+Also see suggestions from Seidel et al. 2019, Appendix C of Seidel et al. 2018,
+or tutorials from the 2018 Movement Ecology in R workshop hosted [here](https://www.danaseidel.com/MovEco-R-Workshop/).
+
+- Habitat Selection Analysis
+    - the `sf` package offers ...
+    - the `raster` package offers ...
+    - the `lme4` package is useful for fitting generalized linear models with fixed or random effects
+- Hidden Markov Models
+    - `momentuHMM`
+    - `moveHmm`
+- Dynamic Interaction between individuals?
+    - `wildlifeDI`
 
 # Constructing Home Ranges
-
-### Suggested Next Steps
-
+=======
+Also consider the numerous analyses made available by the extentive "adehabitat" packages:
+`adehabitatLT`, `adehabitatHR`, `adehabitatMA`, `adehabitatHS` and their indepth vignettes. 

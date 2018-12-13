@@ -17,16 +17,21 @@ Encoding: UTF-8
 LazyData: true
 Depends:
  R (>= 2.10)
+Remotes: 
+  thomasp85/patchwork
 Suggests: 
-    lunar,
-    rmarkdown, 
     testthat,
-    vdiffr
+    vdiffr,
+    lunar,
+    rmarkdown
 Imports:
     adehabitatLT,
+    ctmm,
     dplyr,
     lubridate,
+    move,
     RcppRoll,
+    tlocoh, 
     TTR,
     zoo
 Roxygen: list(markdown = TRUE)

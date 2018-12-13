@@ -1,38 +1,53 @@
-# ### The basic constructions:
-# 1.  Construct 25%, 50%  and 95% home range isopleths by season using two methods:
-#   - 1 general space-time constructor using `t-locoh` hull sets
-# - 1 autocorrelated utilization distribution analysis modeled after `ctmm::akde`
+#' Home Range Construction by Two Methods
+#'
+#' @param df a dataframe containing columns x, y, date representing relocations in space and time.
+#' @param type a character string indicating the type/s of constructions to build, "klocoh" or "akde"
+#' @param proj4 a character string indicating the proj.4 definition of the
+#' coordinate reference system defining the relocations
+#'
+construct <- function(df, type = c("klocoh", "akde"), proj4) {
+  # we may want to consider allowing user specification of some tlocoh arguments.
+
+  # placeholders -- there is certainly a better way.
+  lhs <- NULL
+  UD <- NULL
+
+  if ("akde" %in% type) {
+    message("Be aware, fitting an akde can take several minutes.")
+  }
 
 
-# ctmm will require telemetry objects.
+  if (length(type) > 1) {
+    par(mfrow = c(1, 2))
+  }
 
-# this is a scratch function for moving an sf object to move object to telemetry object
-# should be generalized
+  # k - LoCoh
+  if ("klocoh" %in% tolower(type)) {
+    dropNA <- na.omit(df)
+    k <- round(sqrt(nrow(dropNA)))
+    lxy <- xyt.lxy(
+      xy = matrix(c(dropNA$x, dropNA$y), ncol = 2),
+      dt = dropNA$date, id = dropNA$id,
+      proj4string = CRS(proj4)
+    )
 
-# els.tm <- map(els, function(i) {
-#   AG <- sf_els %>%
-#     filter(id == i) %>%
-#     st_set_crs(32733) %>%
-#     mutate(
-#       location.x = st_coordinates(.)[, 1],
-#       location.y = st_coordinates(.)[, 2],
-#       timestamp = ymd_hms(date)
-#     ) %>%
-#     dplyr::select(
-#       id, timestamp,
-#       location.x, location.y
-#     )
-#   mv <- move(
-#     x = AG$location.x,
-#     y = AG$location.y,
-#     time = AG$timestamp,
-#     data = as.data.frame(AG),
-#     animal = AG$id,
-#     proj = CRS("+proj=utm +zone=33 +south +datum=WGS84 +units=m +no_defs")
-#   ) %>%
-#     as.telemetry(., projection = CRS("+proj=utm +zone=33 +south +datum=WGS84 +units=m +no_defs"))
-#
-#   mv@info$identity <- i
-#
-#   return(mv)
-# })
+    # lxy.thin.bursts.... unnecessary?
+    lxy <- lxy.nn.add(lxy, s = 0, k = k)
+    lhs <- lxy.lhs(lxy, k = k, s = 0, iso.levels = c(0.25, 0.50, 0.95), iso.add = T)
+
+    plot(lhs, iso = T)
+  }
+
+  # ctmm
+  if ("akde" %in% tolower(type)) {
+    telm <- create_telemetry(df,
+      proj4 = proj4
+    )
+    m.ouf <- ctmm::ctmm.guess(telm, interactive = FALSE) # automated model guess
+    M.OUF <- ctmm::ctmm.fit(telm, m.ouf) # this can take awhile...
+    UD <- ctmm::akde(telm, M.OUF)
+    plot(UD, level.UD = c(.25, .5, .95))
+  }
+
+  return(Filter(f = length, x = list(lhs, UD)))
+}
