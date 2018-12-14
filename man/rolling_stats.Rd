@@ -4,12 +4,10 @@
 \alias{rolling_stats}
 \title{Rolling Summary Statistics}
 \usage{
-rolling_stats(x, na.approx = F)
+rolling_stats(x)
 }
 \arguments{
 \item{x}{a dataframe containing columns "x", "y", and "date}
-
-\item{na.approx}{a logical indicating whether or not the user wants to interpolate NAs, see details}
 }
 \description{
 Rolling Summary Statistics

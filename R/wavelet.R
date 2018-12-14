@@ -12,11 +12,10 @@
 #' \donttest{
 #' dist_wavelet(AG195)
 #' }
-#'
-#'
+#' 
+#' 
 #' # Build morelet wavelet diagram based on step sizes over the time series
 dist_wavelet <- function(x, plot = T, na.approx = T) {
-
   traj <- adehabitatLT::dl(x)
   dt <- traj[[1]]$dt[1]
   dist <- traj[[1]]$dist

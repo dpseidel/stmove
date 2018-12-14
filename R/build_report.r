@@ -17,7 +17,7 @@
 #' }
 build_report <- function(df, file = "report.pdf", stats = c("rolling", "diurnal"),
                          construct = c("klocoh"), proj4,
-                         na.approx = T, seas = NULL, wavelet = T) {
+                         seas = NULL, wavelet = T) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop("Package rmarkdown must be installed to build reports. Please install it.",
       call. = FALSE
@@ -25,8 +25,8 @@ build_report <- function(df, file = "report.pdf", stats = c("rolling", "diurnal"
   }
 
   params <- list(
-    df = df, stats = stats, na.approx = na.approx,
-    construct = construct, proj4 = proj4, wavelet = wavelet
+    df = df, stats = stats, construct = construct,
+    proj4 = proj4, seas = seas, wavelet = wavelet
   ) # needs to match params list in yaml
 
   # Knit the document, passing in the `params` list, and eval it in a
