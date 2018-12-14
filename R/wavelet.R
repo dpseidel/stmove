@@ -29,6 +29,6 @@ dist_wavelet <- function(x, plot = T, na.approx = T) {
   dist.wave <- dplR::morlet(dist)
 
   if (plot == T) {
-    dplR::wavelet.plot(dist.wave, crn.lab = gettext("Step Size"), useRaster = T)
+    dplR::wavelet.plot(dist.wave, crn.lab = gettext("Step Size"), useRaster = NA)
   }
 }
