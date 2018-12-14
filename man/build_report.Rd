@@ -5,8 +5,7 @@
 \title{Build a report with basic spatio-temporal movement computations}
 \usage{
 build_report(df, file = "report.pdf", stats = c("rolling", "diurnal"),
-  construct = c("klocoh"), proj4, na.approx = T, seas = NULL,
-  wavelet = T)
+  construct = c("klocoh"), proj4, seas = NULL, wavelet = T)
 }
 \arguments{
 \item{df}{a dataframe containing columns x, y, date representing relocations in space and time.}
@@ -21,8 +20,6 @@ options include "klocoh" and "akde"}
 
 \item{proj4}{a character string indicating the proj.4 definition of the
 coordinate reference system defining the relocations}
-
-\item{na.approx}{a logical indicating whether or not the user wants to interpolate NAs, see details}
 
 \item{seas}{a named numeric vector including the start date of each season
 indicated by the Julian day (see \code{lubridate::yday} for easy conversion).

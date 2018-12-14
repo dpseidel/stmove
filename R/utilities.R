@@ -48,38 +48,36 @@ create_telemetry <- function(df, proj4) {
 #' Apply Kalman smoothing to fill gaps in data
 #'
 #' @param df a dataframe containing columns x, y, date representing relocations in space and time.
-#' @importFrom forecast auto.arima
-#' @importFrom forecast KalmanSmooth
-#'
+#' @importFrom stats KalmanSmooth
+#' @export
 kalman <- function(df) {
-    
-    if (!requireNamespace(c("forecast"), quietly = TRUE)) {
-        stop("Package forecast must be installed for kalman smoothing. Please install it.",
-             call. = FALSE
-        )
-    }
-    
-    # Replace NA values in longitude with Kalman Smoothed estimates
-    lon <- df$x
-    fit <- auto.arima(df$x)
-    kr <- KalmanSmooth(df$x, fit$model)
-    id.na <- which(is.na(df$x))
-    num <- ncol(kr$smooth)
-    for (j in id.na) {
-        lon[j] <- kr$smooth[j, num]
-    }
-    df$x <- lon
-    
-    # Replace NA values in latitude with Kalman Smoothed estimates
-    lat <- df$y
-    fit <- auto.arima(df$y)
-    kr <- KalmanSmooth(df$y, fit$model)
-    id.na <- which(is.na(df$y))
-    num <- ncol(kr$smooth)
-    for (j in id.na) {
-        lat[j] <- kr$smooth[j, num]
-    }
-    df$y <- lat
-    
-    return(df)
+  if (!requireNamespace(c("forecast"), quietly = TRUE)) {
+    stop("Package forecast must be installed for kalman smoothing. Please install it.",
+      call. = FALSE
+    )
+  }
+
+  # Replace NA values in longitude with Kalman Smoothed estimates
+  lon <- df$x
+  fit <- forecast::auto.arima(df$x)
+  kr <- KalmanSmooth(df$x, fit$model)
+  id.na <- which(is.na(df$x))
+  num <- ncol(kr$smooth)
+  for (j in id.na) {
+    lon[j] <- kr$smooth[j, num]
+  }
+  df$x <- lon
+
+  # Replace NA values in latitude with Kalman Smoothed estimates
+  lat <- df$y
+  fit <- forecast::auto.arima(df$y)
+  kr <- KalmanSmooth(df$y, fit$model)
+  id.na <- which(is.na(df$y))
+  num <- ncol(kr$smooth)
+  for (j in id.na) {
+    lat[j] <- kr$smooth[j, num]
+  }
+  df$y <- lat
+
+  return(df)
 }

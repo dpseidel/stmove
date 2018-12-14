@@ -2,13 +2,15 @@
 #' @details some detailled discussion of how auto and cross correlation are calculated and
 #' na handling
 #' @param x a dataframe containing columns "x", "y", and "date
-#' @param na.approx a logical indicating whether or not the user wants to interpolate NAs, see details
 #' @export
 #'
-rolling_stats <- function(x, na.approx = F) {
-  traj <- dl(x)[[1]]
+rolling_stats <- function(x) {
+  traj <- dl(x)[[1]][-nrow(x), ]
   dt <- traj$dt[1] # assuming completely regular trajectory, this is safe.
   n_fix_hr <- 60 * 60 / dt
+
+  # becasue ltraj puts NA in rel.angle when they have not moved.
+  traj$rel.angle[is.na(traj$rel.angle)] <- 0
 
   # decide sliding time window:
   # if dt is greater than or equal to an hr, sliding window should be 6 hr rather than 3.
@@ -18,25 +20,18 @@ rolling_stats <- function(x, na.approx = F) {
     win <- 3
   }
 
-  # if user wants to do light NA interpolation for rolling correlations
-  if (na.approx == T) {
-    dist_fill <- zoo::na.approx(traj$dist) # drops trailing NA, interpolates others.
-    ang_fill <- zoo::na.approx(traj$rel.angle)
-  }
-
-
   dplyr::mutate(traj,
     mean_dist = RcppRoll::roll_meanr(x = dist, n = n_fix_hr * win),
     sd_dist = RcppRoll::roll_sdr(x = dist, n = n_fix_hr * win),
 
     # the source on these runCor functions are written in Fortran
     # provide significant speed improvements but don't handle NAs well.
-    acf_dist = c(runCor(x = dist_fill[-length(dist_fill)], y = dist_fill[-1], n = n_fix_hr * win), NA, NA),
+    acf_dist = c(runCor(x = dist[-length(dist)], y = dist[-1], n = n_fix_hr * win), NA),
     mean_ang = RcppRoll::roll_meanr(rel.angle, n = n_fix_hr * win),
     sd_ang = RcppRoll::roll_sdr(rel.angle, n = n_fix_hr * win),
 
-    acf_ang = c(NA, TTR::runCor(x = ang_fill[-length(ang_fill)], y = ang_fill[-1], n = n_fix_hr * win), NA, NA),
-    ccf = c(NA, TTR::runCor(x = dist_fill[-1], y = ang_fill, n = n_fix_hr * win), NA)
+    acf_ang = c(TTR::runCor(x = rel.angle[-length(rel.angle)], y = rel.angle[-1], n = n_fix_hr * win), NA),
+    ccf = TTR::runCor(x = dist, y = rel.angle, n = n_fix_hr * win)
   )
 }
 
