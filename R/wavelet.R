@@ -13,15 +13,10 @@
 #' ss_dist(AG195)
 #' ta_dist(AG195)
 #' }
-#' 
-#' 
+#'
+#'
 #' # Build morelet wavelet diagram based on step sizes over the time series
 dist_wavelet <- function(x, plot = T, na.approx = T) {
-  if (!requireNamespace(c("dplR"), quietly = TRUE)) {
-    stop("Package dplrR must be installed for wavelet analyses. Please install it.",
-      call. = FALSE
-    )
-  }
 
   traj <- adehabitatLT::dl(x)
   dt <- traj[[1]]$dt[1]
