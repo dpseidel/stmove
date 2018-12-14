@@ -80,7 +80,7 @@ interval_stats <- function(x, type = "diurnal", seas = NULL) {
     interval_starts <- lubridate::yday(c(traj$date[1], sort(c(full, new)), traj$date[nrow(traj)]))
 
     traj$interval_start <- cut(lubridate::yday(traj$date),
-      breaks = unique(interval_starts),  # needs testing
+      breaks = unique(interval_starts), # needs testing
       right = F, include.lowest = T
     )
   }

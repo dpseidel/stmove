@@ -120,6 +120,8 @@ seasonal_stats <<- interval_stats(params$df, type = "seasonal", seas = params$se
 
 ```{r eval= params$wavelet}
 
+dist_wavelet(params$df)
+
 ```
 
 `r if (construct) '# Space Use Constructions'`
@@ -154,7 +156,7 @@ or tutorials from the 2018 Movement Ecology in R workshop hosted [here](https://
 - Dynamic Interaction between individuals?
     - `wildlifeDI`
 
+# Constructing Home Ranges
+=======
 Also consider the numerous analyses made available by the extentive "adehabitat" packages:
 `adehabitatLT`, `adehabitatHR`, `adehabitatMA`, `adehabitatHS` and their indepth vignettes. 
-
-

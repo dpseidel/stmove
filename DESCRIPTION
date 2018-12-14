@@ -23,11 +23,13 @@ Suggests:
     testthat,
     vdiffr,
     lunar,
-    rmarkdown
+    rmarkdown,
+    forecast
 Imports:
     adehabitatLT,
     ctmm,
     dplyr,
+    dplR,
     lubridate,
     move,
     RcppRoll,
