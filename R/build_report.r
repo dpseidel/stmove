@@ -11,7 +11,11 @@
 #' @inheritParams construct
 #'
 #' @export
-build_report <- function(file, df, stats = c("rolling", "diurnal"),
+#' @examples
+#' \donttest{
+#' build_report(AG195, proj4 = "+proj=utm +zone=33 +south +datum=WGS84 +units=m +no_defs")
+#' }
+build_report <- function(df, file = "report.pdf", stats = c("rolling", "diurnal"),
                          construct = c("klocoh"), proj4,
                          na.approx = T, seas = NULL, wavelet = T) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {

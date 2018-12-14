@@ -23,11 +23,12 @@ Suggests:
     testthat,
     vdiffr,
     lunar,
-    rmarkdown
+    rmarkdown,
 Imports:
     adehabitatLT,
     ctmm,
     dplyr,
+    dplR,
     lubridate,
     move,
     RcppRoll,

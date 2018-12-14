@@ -4,14 +4,14 @@
 \alias{build_report}
 \title{Build a report with basic spatio-temporal movement computations}
 \usage{
-build_report(file, df, stats = c("rolling", "diurnal"),
+build_report(df, file = "report.pdf", stats = c("rolling", "diurnal"),
   construct = c("klocoh"), proj4, na.approx = T, seas = NULL,
   wavelet = T)
 }
 \arguments{
-\item{file}{a file name and path.}
-
 \item{df}{a dataframe containing columns x, y, date representing relocations in space and time.}
+
+\item{file}{a file name and path.}
 
 \item{stats}{a character vector of stats to calculate, options include: "rolling",
 "diurnal", "lunar", and "sseasonal}
@@ -32,4 +32,9 @@ Required if \code{type == "seasonal"}}
 }
 \description{
 Build a report with basic spatio-temporal movement computations
+}
+\examples{
+\donttest{
+build_report(AG195, proj4 = "+proj=utm +zone=33 +south +datum=WGS84 +units=m +no_defs")
+}
 }

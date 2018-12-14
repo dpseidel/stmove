@@ -120,6 +120,8 @@ seasonal_stats <<- interval_stats(params$df, type = "seasonal", seas = params$se
 
 ```{r eval= params$wavelet}
 
+dist_wavelet(params$df)
+
 ```
 
 `r if (construct) '# Space Use Constructions'`
