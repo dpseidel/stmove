@@ -4,17 +4,24 @@
 #' @param dt the expected time lag between relocations
 #' @param units a character string indicating the time units for dt and tol
 #' @param tol the tolerance, i.e. the imprecision in the timing of data collection
+#' @param ref a datetime from which to start the fixes. Default `ref=NULL` will
+#' calculate ref value by rounding the first timestamp in `x`
 #'
 #' @export
 #' @importFrom lubridate round_date
 #' @seealso `adehabitatLT::setNA` `adehabitatLT::sett0` `adehabitatLT::subsample`
-regularize <- function(x, dt, units = "min", tol = dt / 10) {
+regularize <- function(x, dt, units = "min", tol = dt / 10, ref = NULL) {
+
   traj <- adehabitatLT::dl(x)
+
+  if (is.null(ref)){
   ref <- lubridate::round_date(summary(traj)$date.begin[1], unit = paste(dt, units))
+  }
+
   traj <- adehabitatLT::setNA(traj, date.ref = ref, dt = dt, units = units)
   traj <- adehabitatLT::sett0(traj, date.ref = ref, dt = dt, units = units)
 
-  return(traj)
+  return(ld(traj))
 }
 
 

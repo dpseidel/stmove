@@ -133,7 +133,7 @@ locoh <<- construct(params$df, type = "klocoh", proj4 = params$proj4)
 
 `r if (akde) '## An autocorrelated kernel density estimation'`
 ```{r, eval = akde}
-akde <<- construct(params$df, type = "akde", proj4 = params$proj4)
+AKDE <<- construct(params$df, type = "akde", proj4 = params$proj4)
 ```
 
 \newpage
