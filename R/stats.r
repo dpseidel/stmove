@@ -53,6 +53,8 @@ interval_stats <- function(x, type = "diurnal", seas = NULL) {
   if (type == "diurnal") {
     # for diurnal stats
     traj$interval_start <- lubridate::floor_date(x = traj$date, "12 hours")
+    traj$TOD <- ifelse(hour(traj$interval_start) == 0, "0:00-12:00", "12:00-24:00")
+    quocol <- sym("TOD")
   }
 
   # lunar cycle
@@ -65,6 +67,7 @@ interval_stats <- function(x, type = "diurnal", seas = NULL) {
     # may want to allow user specification of "shift" parameter to adjust exactly to local time.
 
     traj$phase <- lunar::lunar.phase(traj$date, name = T)
+
     # the following need specific testing, and to be cleaned up!
     full <- unique(lubridate::floor_date(traj[traj$phase == "Full", "date"], "1 day"))[
       c(TRUE, (diff(unique(lubridate::floor_date(traj[traj$phase == "Full", "date"], "1 day"))) != 1))
@@ -72,12 +75,16 @@ interval_stats <- function(x, type = "diurnal", seas = NULL) {
     new <- unique(lubridate::floor_date(traj[traj$phase == "New", "date"], "1 day"))[
       c(TRUE, (diff(unique(lubridate::floor_date(traj[traj$phase == "New", "date"], "1 day"))) != 1))
     ]
-    interval_starts <- lubridate::yday(c(traj$date[1], sort(c(full, new)), traj$date[nrow(traj)]))
+    # odd order of yday and c to avoid automatic switching to local tz
+    interval_starts <- sort(c(yday(traj$date[1]), yday(full), yday(new), yday(traj$date[nrow(traj)])))
 
+    traj$phase <- ifelse(traj$phase %in% c("Full", "Waning"), "Full-Waning", "New-Waxing")
     traj$interval_start <- cut(lubridate::yday(traj$date),
       breaks = unique(interval_starts), # needs testing
       right = F, include.lowest = T
     )
+
+    quocol <- sym("phase")
   }
 
   if (type == "seasonal") {
@@ -87,28 +94,37 @@ interval_stats <- function(x, type = "diurnal", seas = NULL) {
       )
     }
 
-    interval_starts <- yday(c(traj$date[1], seas, traj$date[nrow(traj)]))
+    interval_starts <- unique(c(yday(traj$date[1]), seas, yday(traj$date[nrow(traj)])))
 
     traj$interval_start <- cut(yday(traj$date),
       breaks = interval_starts,
       right = F, include.lowest = T
     )
 
-    # adapt this to take names too??
+    traj$seas <- NA
+
+    for (i in 1:length(seas)) {
+      traj$seas[yday(traj$date) == seas[i]] <- names(seas)[i]
+    }
+
+    traj <- fill(traj, seas, .direction = "down")
+    traj$seas[is.na(traj$seas)] <- names(seas)[length(seas)]
+
+    quocol <- sym("seas")
   }
 
 
   # TODO add some tidy eval so that the group by can include `phase` when type == "lunar"
   traj %>%
-    group_by(interval_start) %>%
+    group_by(interval_start, !!quocol) %>%
     summarise(
       mean_dist = mean(dist, na.rm = T),
       sd_dist = sd(dist, na.rm = T),
-      acf_dist = cor(dist, c(dist[-1], NA), "complete.obs"),
+      acf_dist = cor(dist, c(dist[-1], NA), "p"),
       mean_ang = mean(rel.angle, na.rm = T),
       sd_ang = sd(rel.angle, na.rm = T),
-      acf_ang = cor(rel.angle, c(rel.angle[-1], NA), "complete.obs"),
-      ccf = cor(dist, rel.angle, "complete.obs")
+      acf_ang = cor(rel.angle, c(rel.angle[-1], NA), "p"),
+      ccf = cor(dist, rel.angle, "p")
     )
 
   # For future reference:

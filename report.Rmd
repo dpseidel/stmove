@@ -75,15 +75,13 @@ diurnal_stats <<- interval_stats(params$df)
 
 # We need to make some decisions about how to plot these things...
 plots <- purrr::map(
-  names(diurnal_stats)[c(2, 5, 4, 7, 8)],
+  names(diurnal_stats)[c(3, 6, 5, 8, 9)],
   function(x) {
     y <- sym(x)
     p <- ggplot(
       diurnal_stats,
-      aes(interval_start, y = !!y, color = ifelse(hour(interval_start) == 0,
-        "0:00 - 12:00",
-        "12:00 - 24:00"
-      ))
+      aes(interval_start, y = !!y, color = TOD
+      )
     ) + geom_point(na.rm = T, size = .3) + geom_smooth(na.rm = T) +
       xlab(NULL) +
       theme(axis.text.x = element_text(angle = 25, vjust = .5))
@@ -109,12 +107,65 @@ plots <- purrr::map(
 
 ```{r eval = lunar}
 lunar_stats <<- interval_stats(params$df, type = "lunar")
+
+# We need to make some decisions about how to plot these things...
+plots <- purrr::map(
+  names(lunar_stats)[c(3, 6, 5, 8, 9)],
+  function(x) {
+    y <- sym(x)
+    p <- ggplot(
+      lunar_stats,
+      aes(x = as.numeric(interval_start), y = !!y, color = phase
+      )
+    ) + 
+      geom_point(na.rm = T, size = .3) + 
+      geom_smooth(na.rm = T) +
+      #scale_x_continuous(breaks = 1:nlevels(lunar_stats$interval_start), 
+      #                   labels = levels(lunar_stats$interval_start)) +
+      xlab(NULL) +
+      theme(axis.text.x = element_text(angle = 25, vjust = .5))
+
+    if (x == "acf_ang") {
+      return(p + scale_color_discrete("Lunar Phase") +
+        theme(legend.position = "bottom"))
+    } else {
+      return(p + guides(color = "none"))
+    }
+  }
+)
+
+{
+  plots[[1]] + plots[[2]]
+} - {
+  plots[[3]] + plots[[4]] + plots[[5]]
+} + plot_layout(nrow = 2) +
+  plot_annotation(title = "Lunar Interval Statistics")
+
 ```
 
 `r if (seasonal) '## Seasonal Cycle'`
 
 ```{r eval = seasonal}
 seasonal_stats <<- interval_stats(params$df, type = "seasonal", seas = params$seas)
+
+
+# p1 <-  ggplot(seasonal_stats,
+#       aes(x = as.numeric(interval_start), color = seas)) + 
+#       geom_pointrange(aes( y = mean_dist, ymin = mean_dist - sd_dist, ymax = mean_dist + sd_dist)) +
+# #      geom_pointrange(aes( y = mean_ang, ymin = mean_ang - sd_ang, ymax = mean_ang + sd_ang)) +
+#       scale_x_continuous(breaks = 1:nlevels(seasonal_stats$interval_start), 
+#                          labels = seasonal_stats$seas) +
+#       xlab(NULL) +
+#       theme(axis.text.x = element_text(angle = 25, vjust = .5), legend.position = "None")
+
+seasonal_stats %>% gather("stat", "estimate", -1:-2) %>% 
+  ggplot(., aes(x = as.numeric(interval_start), y = estimate, color = stat)) +
+  geom_point() + geom_path() +
+   scale_x_continuous("Season", breaks = 1:nlevels(seasonal_stats$interval_start), 
+                          labels = seasonal_stats$seas) +
+  ggtitle("Seasonal Interval Statistics")
+
+
 ```
 
 `r if (params$wavelet) '# Visualizing Periodicity'`
