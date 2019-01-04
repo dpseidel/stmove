@@ -13,7 +13,7 @@ build_report(df, file = "report.pdf", stats = c("rolling", "diurnal"),
 \item{file}{a file name and path.}
 
 \item{stats}{a character vector of stats to calculate, options include: "rolling",
-"diurnal", "lunar", and "sseasonal}
+"diurnal", "lunar", and "seasonal"}
 
 \item{construct}{a character vector indicating which spacetime construction methods to use.
 options include "klocoh" and "akde"}

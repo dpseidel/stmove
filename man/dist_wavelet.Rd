@@ -18,8 +18,7 @@ Wavelet analyses
 }
 \examples{
 \donttest{
-ss_dist(AG195)
-ta_dist(AG195)
+dist_wavelet(AG195)
 }
 
 
