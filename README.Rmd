@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 ```
 # stmove
 
-The goal of stmove is to make more accesible and transparant standard spatio-temporal
+The goal of stmove is to make more accessible and transparent standard spatio-temporal
 approaches to interpreting movement data before getting into more challenging 
 aspects of deconstructing movement trajectories.  Analyses in this package expect
 “clean, regular, movement data time series” which consists of a sequence of
