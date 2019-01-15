@@ -4,10 +4,10 @@
 \alias{regularize}
 \title{Regularize a near-regular trajectory}
 \usage{
-regularize(x, dt, units = "min", tol = dt/10, ref = NULL)
+regularize(df, dt, units = "min", tol = dt/10, ref = NULL)
 }
 \arguments{
-\item{x}{a dataframe containing columns x, y, date representing relocations in space and time.}
+\item{df}{a dataframe containing columns x, y, date representing relocations in space and time.}
 
 \item{dt}{the expected time lag between relocations}
 

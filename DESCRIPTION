@@ -33,8 +33,10 @@ Imports:
     lubridate,
     move,
     RcppRoll,
-    tlocoh, 
+    sp,
+    tlocoh,
     TTR,
-    zoo
+    zoo,
+    tidyr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1

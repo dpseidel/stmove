@@ -8,7 +8,7 @@ build_report(df, file = "report.pdf", stats = c("rolling", "diurnal"),
   construct = c("klocoh"), proj4, seas = NULL, wavelet = T)
 }
 \arguments{
-\item{df}{a dataframe containing columns x, y, date representing relocations in space and time.}
+\item{df}{a dataframe containing columns "x", "y", and "date"}
 
 \item{file}{a file name and path.}
 

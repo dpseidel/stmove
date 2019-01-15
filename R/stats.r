@@ -1,11 +1,14 @@
 #' Rolling Summary Statistics
 #' @details some detailled discussion of how auto and cross correlation are calculated and
 #' na handling
-#' @param x a dataframe containing columns "x", "y", and "date
+#' @param df a dataframe containing columns "x", "y", and "date
 #' @export
 #'
-rolling_stats <- function(x) {
-  traj <- dl(x)[[1]][-nrow(x), ]
+rolling_stats <- function(df) {
+  # hack for global variables NOTE avoidance
+  # rel.angle <- NULL
+
+  traj <- dl(df)[[1]][-nrow(df), ]
   dt <- traj$dt[1] # assuming completely regular trajectory, this is safe.
   n_fix_hr <- 60 * 60 / dt
 
@@ -26,7 +29,7 @@ rolling_stats <- function(x) {
 
     # the source on these runCor functions are written in Fortran
     # provide significant speed improvements but don't handle NAs well.
-    acf_dist = c(runCor(x = dist[-length(dist)], y = dist[-1], n = n_fix_hr * win), NA),
+    acf_dist = c(TTR::runCor(x = dist[-length(dist)], y = dist[-1], n = n_fix_hr * win), NA),
     mean_ang = RcppRoll::roll_meanr(rel.angle, n = n_fix_hr * win),
     sd_ang = RcppRoll::roll_sdr(rel.angle, n = n_fix_hr * win),
 
@@ -37,17 +40,20 @@ rolling_stats <- function(x) {
 
 #' Interval Summary Statistics
 #' @export
-#' @param x a dataframe containing columns "x", "y", and "date
+#' @param df a dataframe containing columns "x", "y", and "date"
 #' @param type a character string indicating the intervals to calculate, one of
 #' "diurnal", "lunar", or "seasonal".
 #' @param seas a named numeric vector including the start date of each season
 #' indicated by the Julian day (see `lubridate::yday` for easy conversion).
 #' Required if `type == "seasonal"`
+interval_stats <- function(df, type = "diurnal", seas = NULL) {
+  # hack for global variables NOTE avoidance
+  # interval_start <- NULL
+  # rel.angle <- NULL
 
-interval_stats <- function(x, type = "diurnal", seas = NULL) {
   # Consider adapting this to do multiple ids at once or for full ltraj compatability
 
-  traj <- dl(x)[[1]]
+  traj <- dl(df)[[1]]
 
   # jumping time window - 12hr - diurnal cycle
   if (type == "diurnal") {
@@ -107,7 +113,7 @@ interval_stats <- function(x, type = "diurnal", seas = NULL) {
       traj$seas[yday(traj$date) == seas[i]] <- names(seas)[i]
     }
 
-    traj <- fill(traj, seas, .direction = "down")
+    traj <- tidyr::fill(traj, seas, .direction = "down")
     traj$seas[is.na(traj$seas)] <- names(seas)[length(seas)]
 
     quocol <- sym("seas")

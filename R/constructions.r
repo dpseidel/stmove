@@ -25,15 +25,15 @@ construct <- function(df, type = c("klocoh", "akde"), proj4) {
   if ("klocoh" %in% tolower(type)) {
     dropNA <- na.omit(df)
     k <- round(sqrt(nrow(dropNA)))
-    lxy <- xyt.lxy(
+    lxy <- tlocoh::xyt.lxy(
       xy = matrix(c(dropNA$x, dropNA$y), ncol = 2),
       dt = dropNA$date, id = dropNA$id,
-      proj4string = CRS(proj4)
+      proj4string = sp::CRS(proj4)
     )
 
     # lxy.thin.bursts.... unnecessary?
-    lxy <- lxy.nn.add(lxy, s = 0, k = k)
-    lhs <- lxy.lhs(lxy, k = k, s = 0, iso.levels = c(0.25, 0.50, 0.95), iso.add = T)
+    lxy <- tlocoh::lxy.nn.add(lxy, s = 0, k = k)
+    lhs <- tlocoh::lxy.lhs(lxy, k = k, s = 0, iso.levels = c(0.25, 0.50, 0.95), iso.add = T)
 
     plot(lhs, iso = T)
   }

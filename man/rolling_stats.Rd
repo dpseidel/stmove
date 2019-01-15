@@ -4,10 +4,10 @@
 \alias{rolling_stats}
 \title{Rolling Summary Statistics}
 \usage{
-rolling_stats(x)
+rolling_stats(df)
 }
 \arguments{
-\item{x}{a dataframe containing columns "x", "y", and "date}
+\item{df}{a dataframe containing columns "x", "y", and "date}
 }
 \description{
 Rolling Summary Statistics

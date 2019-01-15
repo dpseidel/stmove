@@ -4,10 +4,10 @@
 \alias{dist_wavelet}
 \title{Wavelet analyses}
 \usage{
-dist_wavelet(x, plot = T, na.approx = T)
+dist_wavelet(df, plot = T, na.approx = T)
 }
 \arguments{
-\item{x}{a dataframe with columns: x, y, date, and id (optional)}
+\item{df}{a dataframe with columns: x, y, date, and id (optional)}
 
 \item{plot}{a logical indicating whether or not to return a histogram of the distribution}
 

@@ -4,10 +4,10 @@
 \alias{interval_stats}
 \title{Interval Summary Statistics}
 \usage{
-interval_stats(x, type = "diurnal", seas = NULL)
+interval_stats(df, type = "diurnal", seas = NULL)
 }
 \arguments{
-\item{x}{a dataframe containing columns "x", "y", and "date}
+\item{df}{a dataframe containing columns "x", "y", and "date"}
 
 \item{type}{a character string indicating the intervals to calculate, one of
 "diurnal", "lunar", or "seasonal".}
