@@ -1,6 +1,5 @@
 context("Distributions")
 
-
 test_that("dist functions return a plot and numeric vector", {
   vdiffr::expect_doppelganger("turning angle dist", {
     ta <- head(ta_dist(AG195))
