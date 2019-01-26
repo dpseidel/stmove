@@ -25,7 +25,10 @@ Suggests:
     lunar,
     rmarkdown,
     forecast,
-    covr
+    covr, 
+    rstudioapi, 
+    miniUI, 
+    shiny
 Imports:
     adehabitatLT,
     ctmm,

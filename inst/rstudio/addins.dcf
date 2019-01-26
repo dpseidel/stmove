@@ -1,0 +1,4 @@
+Name: Build Report
+Description: Runs movement analyses and returns a pdf report
+Binding: report_addin
+Interactive: true
