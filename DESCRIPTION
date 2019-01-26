@@ -24,7 +24,8 @@ Suggests:
     vdiffr,
     lunar,
     rmarkdown,
-    forecast
+    forecast,
+    covr
 Imports:
     adehabitatLT,
     ctmm,

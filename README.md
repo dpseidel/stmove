@@ -1,6 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+[![Travis build
+status](https://travis-ci.com/dpseidel/stmove.svg?branch=master)](https://travis-ci.com/dpseidel/stmove)
+[![Codecov test
+coverage](https://codecov.io/gh/dpseidel/stmove/branch/master/graph/badge.svg)](https://codecov.io/github/dpseidel/stmove?branch=master)
+
 # stmove
 
 The goal of stmove is to make more accessible and transparent standard

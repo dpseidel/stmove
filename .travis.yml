@@ -1,0 +1,9 @@
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+language: R
+sudo: false
+cache: packages
+r_packages:
+  - covr
+after_success:
+  - Rscript -e 'covr::codecov(token = "6e978497-c837-416a-b5e1-ddd4dd676fb5")'
