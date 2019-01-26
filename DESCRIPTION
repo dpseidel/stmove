@@ -19,7 +19,7 @@ Depends:
  R (>= 2.10)
 Remotes: 
   thomasp85/patchwork,
-  rforge/tlocoh
+  url::http://download.r-forge.r-project.org/bin/windows/contrib/3.4/tlocoh_1.40.05.zip
 Suggests: 
     testthat,
     vdiffr,
