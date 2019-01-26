@@ -30,11 +30,11 @@ rolling_stats <- function(df) {
     # the source on these runCor functions are written in Fortran
     # provide significant speed improvements but don't handle NAs well.
     acf_dist = c(TTR::runCor(x = dist[-length(dist)], y = dist[-1], n = n_fix_hr * win), NA),
-    mean_ang = RcppRoll::roll_meanr(rel.angle, n = n_fix_hr * win),
-    sd_ang = RcppRoll::roll_sdr(rel.angle, n = n_fix_hr * win),
+    mean_ang = RcppRoll::roll_meanr(.data$rel.angle, n = n_fix_hr * win),
+    sd_ang = RcppRoll::roll_sdr(.data$rel.angle, n = n_fix_hr * win),
 
-    acf_ang = c(TTR::runCor(x = rel.angle[-length(rel.angle)], y = rel.angle[-1], n = n_fix_hr * win), NA),
-    ccf = TTR::runCor(x = dist, y = rel.angle, n = n_fix_hr * win)
+    acf_ang = c(TTR::runCor(x = .data$rel.angle[-length(.data$rel.angle)], y = .data$rel.angle[-1], n = n_fix_hr * win), NA),
+    ccf = TTR::runCor(x = dist, y = .data$rel.angle, n = n_fix_hr * win)
   )
 }
 
@@ -47,10 +47,6 @@ rolling_stats <- function(df) {
 #' indicated by the Julian day (see `lubridate::yday` for easy conversion).
 #' Required if `type == "seasonal"`
 interval_stats <- function(df, type = "diurnal", seas = NULL) {
-  # hack for global variables NOTE avoidance
-  # interval_start <- NULL
-  # rel.angle <- NULL
-
   # Consider adapting this to do multiple ids at once or for full ltraj compatability
 
   traj <- dl(df)[[1]]
@@ -122,15 +118,15 @@ interval_stats <- function(df, type = "diurnal", seas = NULL) {
 
   # TODO add some tidy eval so that the group by can include `phase` when type == "lunar"
   traj %>%
-    group_by(interval_start, !!quocol) %>%
+    group_by(.data$interval_start, !!quocol) %>%
     summarise(
       mean_dist = mean(dist, na.rm = T),
       sd_dist = sd(dist, na.rm = T),
       acf_dist = cor(dist, c(dist[-1], NA), "p"),
-      mean_ang = mean(rel.angle, na.rm = T),
-      sd_ang = sd(rel.angle, na.rm = T),
-      acf_ang = cor(rel.angle, c(rel.angle[-1], NA), "p"),
-      ccf = cor(dist, rel.angle, "p")
+      mean_ang = mean(.data$rel.angle, na.rm = T),
+      sd_ang = sd(.data$rel.angle, na.rm = T),
+      acf_ang = cor(.data$rel.angle, c(.data$rel.angle[-1], NA), "p"),
+      ccf = cor(dist, .data$rel.angle, "p")
     )
 
   # For future reference:

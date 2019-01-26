@@ -5,7 +5,7 @@
 #' @param units a character string indicating the time units for dt and tol
 #' @param tol the tolerance, i.e. the imprecision in the timing of data collection
 #' @param ref a datetime from which to start the fixes. Default `ref=NULL` will
-#' calculate ref value by rounding the first timestamp in `x`
+#' calculate ref value by rounding the first timestamp in `df`
 #'
 #' @export
 #' @seealso `adehabitatLT::setNA` `adehabitatLT::sett0` `adehabitatLT::subsample`

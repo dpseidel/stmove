@@ -16,7 +16,7 @@ regularize(df, dt, units = "min", tol = dt/10, ref = NULL)
 \item{tol}{the tolerance, i.e. the imprecision in the timing of data collection}
 
 \item{ref}{a datetime from which to start the fixes. Default \code{ref=NULL} will
-calculate ref value by rounding the first timestamp in \code{x}}
+calculate ref value by rounding the first timestamp in \code{df}}
 }
 \description{
 Regularize a near-regular trajectory

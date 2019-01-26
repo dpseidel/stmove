@@ -1,3 +1,3 @@
-population_report <- function(list){
+population_report <- function(list) {
 
 }

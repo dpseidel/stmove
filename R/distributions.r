@@ -8,14 +8,12 @@
 #' @param plot a logical indicating whether or not to return a histogram of the distribution
 #' @return a numeric vector and (optionally) a plot of the turning angle or step length distribution
 #' @export
-#' @importFrom adehabitatLT dl
-#' @importFrom graphics hist
 #' @examples
 #' \donttest{
 #' ss_dist(AG195)
 #' ta_dist(AG195)
 #' }
-#' 
+#'
 ss_dist <- function(x, plot = T) {
 
   # we could make these calculations ourselves without pulling in adehabitat
