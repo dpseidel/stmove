@@ -1,29 +1,29 @@
 #' Wavelet analyses
 #'
+#' Build morelet wavelet diagrams for step size, turning angle, auto and cross correlation
+#' coefficients through time.
 #'
-#' @param df a dataframe with columns: x, y, date, and id (optional)
+#' @param df a dataframe with columns: x, y, date
+#' @param stat optional specifier of which variable to calculate wavelet analysis on.
+#' dist", "ang", "autoD", "autoA", "cross"
 #' @param plot a logical indicating whether or not to return a histogram of the distribution
-#' @param na.approx a logical indicating whether NA values should be interpolated using to `zoo::na.approx`
 #' @export
 #' @examples
 #' \donttest{
-#' dist_wavelet(AG195)
+#' wavelet(AG195)
+#' wavelet(AG195, c("dist", "angle"))
 #' }
-#' 
-#' 
-#' # Build morelet wavelet diagram based on step sizes over the time series
-dist_wavelet <- function(df, plot = T, na.approx = T) {
-  traj <- adehabitatLT::dl(df)
-  dt <- traj[[1]]$dt[1]
-  dist <- traj[[1]]$dist
+#'
+wavelet <- function(df, stats = c("dist", "rel.angle", "acf_dist", "acf_ang", "ccf"), plot = T) {
+  x <- rolling_stats(df)
 
-  if (na.approx == T) {
-    dist <- zoo::na.approx(dist)
+  wave <- list()
+  for (i in stats) {
+    wave[[i]] <- dplR::morlet(na.omit(x[[i]])) # na.omit to remove leading 0's on acf and ccf
+    if (plot == T) {
+      dplR::wavelet.plot(wave[[i]], crn.lab = gettext(i), useRaster = NA)
+    }
   }
 
-  dist.wave <- dplR::morlet(dist)
-
-  if (plot == T) {
-    dplR::wavelet.plot(dist.wave, crn.lab = gettext("Step Size"), useRaster = NA)
-  }
+  return(wave)
 }

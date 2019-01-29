@@ -171,7 +171,7 @@ seasonal_stats %>% gather("stat", "estimate", -1:-2) %>%
 `r if (params$wavelet) '# Visualizing Periodicity'`
 
 ```{r eval= params$wavelet}
-dist_wavelet(params$df)
+wave <<- wavelet(params$df)
 ```
 
 `r if (construct) '# Space Use Constructions'`
