@@ -45,7 +45,7 @@ build_report <- function(df, path = ".", stats = c("rolling", "diurnal"),
     for (i in ids) {
       rmarkdown::render("report.Rmd",
         output_file = paste0(path, "/report_", i, ".pdf"),
-        params = params,
+        params = modify_list(params, list(df = dplyr::filter(df, id == i))),
         envir = new.env(parent = globalenv())
       )
     }
