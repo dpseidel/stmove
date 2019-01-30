@@ -19,7 +19,6 @@ Depends:
  R (>= 2.10)
 Remotes: 
   thomasp85/patchwork,
-  url::http://download.r-forge.r-project.org/bin/windows/contrib/3.4/tlocoh_1.40.05.zip
 Suggests: 
     testthat,
     vdiffr,
@@ -32,6 +31,10 @@ Suggests:
     shiny
 Imports:
     adehabitatLT,
+    ggplot2,
+    tlocoh, 
+    ggrepel,
+    sf,
     ctmm,
     dplyr,
     dplR,
@@ -39,7 +42,6 @@ Imports:
     move,
     RcppRoll,
     sp,
-    tlocoh,
     TTR,
     zoo,
     tidyr

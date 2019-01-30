@@ -31,3 +31,19 @@
 #'   \item{id}{animal id}
 #' }
 "AG268"
+
+#' elephants: two elephant trajectories, one dataframe
+#'
+#' A dataframe containing the clean regularized relocation points for
+#' two African elephants (\emph{Loxodonta africana}). All points are from
+#'  2010 and were collected by Getz et al. x and y coordinates are projected in
+#'  WGS 84 / UTM zone 33S (espg:32733). Columns are as follows:
+#'
+#' @format A data frame with 53940 rows and 10 variables:
+#' \describe{
+#'   \item{x}{x coordinate}
+#'   \item{y}{y coordinate}
+#'   \item{date}{timestamp of relocation}
+#'   \item{id}{animal id}
+#' }
+"elephants"

@@ -33,7 +33,7 @@ report_addin <- function() {
         shiny::textInput("path", "Output File Path"),
         shiny::textInput("proj4", "Projection (proj.4 string)")
       ),
-      uiOutput("pending"),
+      shiny::uiOutput("pending"),
       miniUI::miniContentPanel(
         shiny::checkboxGroupInput(
           "stats",
@@ -74,7 +74,7 @@ report_addin <- function() {
   )
 
   server <- function(input, output, session) {
-    reactive_data <- reactive({
+    reactive_data <- shiny::reactive({
       dataString <- input$df
 
       if (!nzchar(dataString)) {
@@ -88,10 +88,10 @@ report_addin <- function() {
       get(dataString, envir = .GlobalEnv)
     })
 
-    output$pending <- renderUI({
+    output$pending <- shiny::renderUI({
       data <- reactive_data()
       if (isErrorMessage(data)) {
-        h4(style = "color: #AA7732;", data$message)
+        shiny::h4(style = "color: #AA7732;", data$message)
       }
     })
 

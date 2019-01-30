@@ -10,10 +10,10 @@ wavelet(df, stats = c("dist", "rel.angle", "acf_dist", "acf_ang", "ccf"),
 \arguments{
 \item{df}{a dataframe with columns: x, y, date}
 
-\item{plot}{a logical indicating whether or not to return a histogram of the distribution}
-
-\item{stat}{optional specifier of which variable to calculate wavelet analysis on.
+\item{stats}{optional specifier of which variable to calculate wavelet analysis on.
 dist", "ang", "autoD", "autoA", "cross"}
+
+\item{plot}{a logical indicating whether or not to return a histogram of the distribution}
 }
 \description{
 Build morelet wavelet diagrams for step size, turning angle, auto and cross correlation

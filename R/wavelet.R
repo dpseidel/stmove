@@ -4,7 +4,7 @@
 #' coefficients through time.
 #'
 #' @param df a dataframe with columns: x, y, date
-#' @param stat optional specifier of which variable to calculate wavelet analysis on.
+#' @param stats optional specifier of which variable to calculate wavelet analysis on.
 #' dist", "ang", "autoD", "autoA", "cross"
 #' @param plot a logical indicating whether or not to return a histogram of the distribution
 #' @export
@@ -13,7 +13,7 @@
 #' wavelet(AG195)
 #' wavelet(AG195, c("dist", "angle"))
 #' }
-#' 
+#'
 wavelet <- function(df, stats = c("dist", "rel.angle", "acf_dist", "acf_ang", "ccf"), plot = T) {
   x <- rolling_stats(df)
 

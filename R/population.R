@@ -4,23 +4,25 @@
 #' @param proj4 a character string indicating the proj.4 definition of the
 #' coordinate reference system defining the relocations
 #' @export
+#' @importFrom ggplot2 ggplot aes geom_sf labs
 dist_map <- function(df, proj4) {
   mean_sf <- df %>%
-    dplyr::group_by(id) %>%
+    dplyr::group_by(.data$id) %>%
     dplyr::summarise(
-      meanX = mean(x, na.rm = T),
-      meanY = mean(y, na.rm = T),
-      meanyear = factor(round(mean(lubridate::year(date)), 0))
+      meanX = mean(.data$x, na.rm = T),
+      meanY = mean(.data$y, na.rm = T),
+      meanyear = factor(round(mean(lubridate::year(.data$date)), 0))
     ) %>%
     sf::st_as_sf(coords = c("meanX", "meanY"), remove = FALSE, crs = proj4)
 
   print(ggplot(data = mean_sf) +
-    geom_sf(aes(fill = meanyear)) +
+    geom_sf(aes(color = .data$meanyear, fill = .data$meanyear)) +
     ggrepel::geom_text_repel(mapping = aes(
-      x = meanX, y = meanY,
-      label = id, color = meanyear
+      x = .data$meanX, y = .data$meanY,
+      label = .data$id, color = .data$meanyear
     )) +
-    ggtitle("General Spatial and Temporal Distribution of Individuals"))
+    labs(title = "General Spatial and Temporal Distribution of Individuals",
+    x = "Latitude",  y = "Longitude", color = "Year", fill = "Year"))
 
   return(mean_sf)
 }
@@ -30,14 +32,17 @@ dist_map <- function(df, proj4) {
 #'
 #' @param df a dataframe containing columns "x", "y", "date", and "id"
 #' @export
+#' @importFrom ggplot2 geom_segment
 plot_timeline <- function(df) {
   df %>%
-    group_by(id) %>%
-    summarise(start_date = min(date), end_date = max(date)) %>%
+    group_by(.data$id) %>%
+    summarise(start_date = min(.data$date), end_date = max(.data$date)) %>%
     ggplot() + geom_segment(aes(
-      x = start_date, xend = end_date,
-      y = id, yend = id, color = id
+      x = .data$start_date, xend = .data$end_date,
+      y = .data$id, yend = .data$id, color = .data$id
     ),
     linetype = 1, size = 2
-    )
+    ) +
+    labs(title = "Timeline Plot of Tagged Individuals",
+         x = "Date",  y = "ID", color = "ID")
 }
