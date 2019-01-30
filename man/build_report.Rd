@@ -4,13 +4,13 @@
 \alias{build_report}
 \title{Build a report with basic spatio-temporal movement computations}
 \usage{
-build_report(df, file = "report.pdf", stats = c("rolling", "diurnal"),
+build_report(df, path = ".", stats = c("rolling", "diurnal"),
   construct = c("klocoh"), proj4, seas = NULL, wavelet = T)
 }
 \arguments{
 \item{df}{a dataframe containing columns "x", "y", and "date"}
 
-\item{file}{a file name and path.}
+\item{path}{output file path}
 
 \item{stats}{a character vector of stats to calculate, options include: "rolling",
 "diurnal", "lunar", and "seasonal"}

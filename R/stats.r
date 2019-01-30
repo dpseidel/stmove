@@ -1,13 +1,10 @@
 #' Rolling Summary Statistics
-#' @details some detailled discussion of how auto and cross correlation are calculated and
+#' @details some detailed discussion of how auto and cross correlation are calculated and
 #' na handling
 #' @param df a dataframe containing columns "x", "y", and "date
 #' @export
 #'
 rolling_stats <- function(df) {
-  # hack for global variables NOTE avoidance
-  # rel.angle <- NULL
-
   traj <- dl(df)[[1]][-nrow(df), ]
   dt <- traj$dt[1] # assuming completely regular trajectory, this is safe.
   n_fix_hr <- 60 * 60 / dt

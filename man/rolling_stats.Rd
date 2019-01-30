@@ -13,6 +13,6 @@ rolling_stats(df)
 Rolling Summary Statistics
 }
 \details{
-some detailled discussion of how auto and cross correlation are calculated and
+some detailed discussion of how auto and cross correlation are calculated and
 na handling
 }

@@ -2,7 +2,7 @@
 #'
 #' @inheritParams interval_stats
 #' @inheritParams rolling_stats
-#' @param file a file name and path.
+#' @param path output file path
 #' @param stats a character vector of stats to calculate, options include: "rolling",
 #' "diurnal", "lunar", and "seasonal"
 #' @param construct a character vector indicating which spacetime construction methods to use.

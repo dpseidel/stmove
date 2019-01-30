@@ -13,7 +13,7 @@
 #' ss_dist(AG195)
 #' ta_dist(AG195)
 #' }
-#'
+#' 
 ss_dist <- function(x, plot = T) {
 
   # we could make these calculations ourselves without pulling in adehabitat

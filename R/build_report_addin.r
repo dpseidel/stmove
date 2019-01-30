@@ -18,55 +18,57 @@ report_addin <- function() {
   defaultData <- text
 
   ui <- miniUI::miniPage(
-    #shiny::tags$head(shiny::includeCSS(path(resource_path, "reprex.css"))),
+    # shiny::tags$head(shiny::includeCSS(path(resource_path, "reprex.css"))),
     miniUI::gadgetTitleBar(
       shiny::p(
         "Use",
         shiny::a(href = "https://stmove.pkgdown.com", "stmove"),
         "to build a movement report"
       ),
-      right = miniUI::miniTitleBarButton("done", "Build", primary = TRUE)),
+      right = miniUI::miniTitleBarButton("done", "Build", primary = TRUE)
+    ),
     miniUI::miniContentPanel(
       stableColumnLayout(
         shiny::textInput("df", "Data", value = defaultData),
         shiny::textInput("path", "Output File Path"),
         shiny::textInput("proj4", "Projection (proj.4 string)")
       ), miniUI::miniContentPanel(
-      shiny::checkboxGroupInput(
-        "stats",
-        "Calculate which movement statistics?",
-        c(
-          "Rolling Window" = "rolling",
-          "Diurnal" = "diurnal",
-          "Lunar" = "lunar",
-          "Seasonal" = "seasonal"
-        )
-      ),
-      shiny::conditionalPanel(
-        condition = "input.stats.includes('seasonal')",
-        shiny::textInput(
-          inputId = "seas",
-          label = "Season start dates (Julian dates)"
-        )
-      ), shiny::checkboxGroupInput(
-        "construct",
-        "Calculate which space use constructions?",
-        c(
-          "AKDE" = "clipboard",
-          "T-Locoh" = "cur_sel"
-        )
-      ), shiny::checkboxGroupInput(
-        "wavelet",
-        "Conduct and plot which wavelet analysis?",
-        c("Step Size" = "dist",
-          "Turning Angle" = "rel.angle",
-          "ACF - Step Size" = "acf_dist",
-          "ACF - Turning Angle" = "acf_ang",
-          "CCF" = "ccf"
+        shiny::checkboxGroupInput(
+          "stats",
+          "Calculate which movement statistics?",
+          c(
+            "Rolling Window" = "rolling",
+            "Diurnal" = "diurnal",
+            "Lunar" = "lunar",
+            "Seasonal" = "seasonal"
           )
+        ),
+        shiny::conditionalPanel(
+          condition = "input.stats.includes('seasonal')",
+          shiny::textInput(
+            inputId = "seas",
+            label = "Season start dates (Julian dates)"
+          )
+        ), shiny::checkboxGroupInput(
+          "construct",
+          "Calculate which space use constructions?",
+          c(
+            "AKDE" = "clipboard",
+            "T-Locoh" = "cur_sel"
+          )
+        ), shiny::checkboxGroupInput(
+          "wavelet",
+          "Conduct and plot which wavelet analysis?",
+          c(
+            "Step Size" = "dist",
+            "Turning Angle" = "rel.angle",
+            "ACF - Step Size" = "acf_dist",
+            "ACF - Turning Angle" = "acf_ang",
+            "CCF" = "ccf"
+          )
+        )
       )
-  )
-  )
+    )
   )
 
   server <- function(input, output, session) {
@@ -79,7 +81,7 @@ report_addin <- function() {
         proj4 = input$proj4,
         seas = input$seas,
         wavelet = input$wavelet
-        ))
+      ))
     })
   }
 
