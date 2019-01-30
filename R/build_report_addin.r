@@ -29,14 +29,14 @@ report_addin <- function() {
     miniUI::miniContentPanel(
       stableColumnLayout(
         shiny::textInput("df", "Data", value = defaultData),
-        shiny::textInput("file", "Output File Path"),
+        shiny::textInput("path", "Output File Path"),
         shiny::textInput("proj4", "Projection (proj.4 string)")
       ), miniUI::miniContentPanel(
       shiny::checkboxGroupInput(
         "stats",
         "Calculate which movement statistics?",
         c(
-          "6hr Rolling Window" = "rolling",
+          "Rolling Window" = "rolling",
           "Diurnal" = "diurnal",
           "Lunar" = "lunar",
           "Seasonal" = "seasonal"
@@ -55,10 +55,15 @@ report_addin <- function() {
           "AKDE" = "clipboard",
           "T-Locoh" = "cur_sel"
         )
-      ), shiny::radioButtons(
+      ), shiny::checkboxGroupInput(
         "wavelet",
-        "Conduct and plot wavelet analysis?",
-        c("Yes" = TRUE, "No" = FALSE)
+        "Conduct and plot which wavelet analysis?",
+        c("Step Size" = "dist",
+          "Turning Angle" = "rel.angle",
+          "ACF - Step Size" = "acf_dist",
+          "ACF - Turning Angle" = "acf_ang",
+          "CCF" = "ccf"
+          )
       )
   )
   )
@@ -67,13 +72,13 @@ report_addin <- function() {
   server <- function(input, output, session) {
     shiny::observeEvent(input$done, { # a couple things to think about -- how to specify data, output file?
       shiny::stopApp(build_report(
-        input$df,
-        input$file,
-        input$stats,
-        input$construct,
-        input$proj4,
-        input$seas,
-        as.logical(input$wavelet)
+        df = input$df,
+        path = input$path,
+        stats = input$stats,
+        construct = input$construct,
+        proj4 = input$proj4,
+        seas = input$seas,
+        wavelet = input$wavelet
         ))
     })
   }

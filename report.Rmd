@@ -27,6 +27,7 @@ rolling <- ("rolling" %in% params$stats)
 diurnal <- ("diurnal" %in% params$stats)
 lunar <- ("lunar" %in% params$stats)
 seasonal <- ("seasonal" %in% params$stats)
+wavelet <- (!is.null(params$wavelet))
 ```
 
 # Visualize my trajectory
@@ -168,10 +169,10 @@ seasonal_stats %>% gather("stat", "estimate", -1:-2) %>%
 
 ```
 
-`r if (params$wavelet) '# Visualizing Periodicity'`
+`r if (wavelet) '# Visualizing Periodicity'`
 
-```{r eval= params$wavelet}
-wave <<- wavelet(params$df)
+```{r eval = wavelet}
+wave <<- wavelet(params$df, stats = params$wavelet)
 ```
 
 `r if (construct) '# Space Use Constructions'`

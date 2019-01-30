@@ -15,7 +15,7 @@
 #' \donttest{
 #' build_report(AG195, proj4 = "+proj=utm +zone=33 +south +datum=WGS84 +units=m +no_defs")
 #' }
-build_report <- function(df, file = "report.pdf", stats = c("rolling", "diurnal"),
+build_report <- function(df, path = ".", stats = c("rolling", "diurnal"),
                          construct = c("klocoh"), proj4,
                          seas = NULL, wavelet = T) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
@@ -32,9 +32,28 @@ build_report <- function(df, file = "report.pdf", stats = c("rolling", "diurnal"
   # Knit the document, passing in the `params` list, and eval it in a
   # child of the global environment (this isolates the code in the document
   # from the code in this package).
-  rmarkdown::render("report.Rmd",
-    output_file = file,
-    params = params,
-    envir = new.env(parent = globalenv())
-  )
+
+  if (length(unique(params$df$id)) > 1) {
+    # population report
+    rmarkdown::render("pop.Rmd",
+      output_file = paste0(path, "/population.pdf"),
+      params = list(df = df),
+      envir = new.env(parent = globalenv())
+    )
+    # individual reports
+    ids <- unique(params$df$id)
+    for (i in ids) {
+      rmarkdown::render("report.Rmd",
+        output_file = paste0(path, "/report_", i, ".pdf"),
+        params = params,
+        envir = new.env(parent = globalenv())
+      )
+    }
+  } else {
+    rmarkdown::render("report.Rmd",
+      output_file = paste0(path, "/report_", i, ".pdf"),
+      params = params,
+      envir = new.env(parent = globalenv())
+    )
+  }
 }

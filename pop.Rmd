@@ -1,0 +1,18 @@
+---
+title: "Population Trajectory Analyses"
+subtitle: "created with pkg stmove" 
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: pdf_document
+params:
+  df: NA
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r pop, messages = F}
+dist_map(df)
+
+plot_timeline(df)
+```
