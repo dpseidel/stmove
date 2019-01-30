@@ -1,9 +1,18 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
-sudo: false
+sudo: true
 cache: packages
+sudo: required
+dist: trusty
+
 r_packages:
   - covr
+
+before_install:
+  - sudo add-apt-repository -y ppa:opencpu/imagemagick
+  - sudo apt-get update
+  - sudo apt-get install -y libmagick++-dev
+
 after_success:
   - Rscript -e 'covr::codecov(token = "6e978497-c837-416a-b5e1-ddd4dd676fb5")'
