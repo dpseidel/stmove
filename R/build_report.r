@@ -37,7 +37,7 @@ build_report <- function(df, path = ".", stats = c("rolling", "diurnal"),
     # population report
     rmarkdown::render("pop.Rmd",
       output_file = paste0(path, "/population.pdf"),
-      params = list(df = df),
+      params = list(df = df, proj4 = proj4),
       envir = new.env(parent = globalenv())
     )
     # individual reports

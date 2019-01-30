@@ -4,7 +4,7 @@
 \alias{dist_map}
 \title{Spatial Temporal Distribution Plot}
 \usage{
-dist_map(df)
+dist_map(df, proj4)
 }
 \arguments{
 \item{df}{a dataframe containing columns "x", "y", "date", and "id"}

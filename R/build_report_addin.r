@@ -78,7 +78,7 @@ report_addin <- function() {
       dataString <- input$df
 
       if (!nzchar(dataString)) {
-        return(errorMessage("data", "No dataset available."))
+        return(errorMessage("data", "No dataset specified."))
       }
 
       if (!exists(dataString, envir = .GlobalEnv)) {

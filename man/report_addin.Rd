@@ -10,5 +10,5 @@ report_addin()
 \code{report_addin()} opens an \href{https://shiny.rstudio.com/articles/gadgets.html}{RStudio gadget} and
 \href{http://rstudio.github.io/rstudioaddins/}{addin} that allows you to
 choose which analyses to run and build a report.
-Appears as "Build Report" in the RStudio Addins menu.
+Appears as "Build report" in the RStudio Addins menu.
 }

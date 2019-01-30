@@ -4,7 +4,7 @@
 #' @param proj4 a character string indicating the proj.4 definition of the
 #' coordinate reference system defining the relocations
 #' @export
-dist_map <- function(df) {
+dist_map <- function(df, proj4) {
   mean_sf <- df %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
@@ -12,16 +12,15 @@ dist_map <- function(df) {
       meanY = mean(y, na.rm = T),
       meanyear = factor(round(mean(lubridate::year(date)), 0))
     ) %>%
-    st_as_sf(coords = c("meanX", "meanY"), remove = FALSE) %>%
-    st_set_crs(proj4)
+    sf::st_as_sf(coords = c("meanX", "meanY"), remove = FALSE, crs = proj4)
 
-  ggplot(data = mean_sf) +
+  print(ggplot(data = mean_sf) +
     geom_sf(aes(fill = meanyear)) +
-    geom_text_repel(mapping = aes(
+    ggrepel::geom_text_repel(mapping = aes(
       x = meanX, y = meanY,
       label = id, color = meanyear
     )) +
-    ggtitle("General Spatial and Temporal Distribution of Individuals")
+    ggtitle("General Spatial and Temporal Distribution of Individuals"))
 
   return(mean_sf)
 }
