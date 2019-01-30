@@ -33,7 +33,7 @@ build_report <- function(df, path = ".", stats = c("rolling", "diurnal"),
   # child of the global environment (this isolates the code in the document
   # from the code in this package).
 
-  if (length(unique(params$df$id)) > 1) {
+  if (length(unique(df$id)) > 1) {
     # population report
     rmarkdown::render("pop.Rmd",
       output_file = paste0(path, "/population.pdf"),
@@ -41,7 +41,7 @@ build_report <- function(df, path = ".", stats = c("rolling", "diurnal"),
       envir = new.env(parent = globalenv())
     )
     # individual reports
-    ids <- unique(params$df$id)
+    ids <- unique(df$id)
     for (i in ids) {
       rmarkdown::render("report.Rmd",
         output_file = paste0(path, "/report_", i, ".pdf"),
@@ -51,7 +51,7 @@ build_report <- function(df, path = ".", stats = c("rolling", "diurnal"),
     }
   } else {
     rmarkdown::render("report.Rmd",
-      output_file = paste0(path, "/report_", i, ".pdf"),
+      output_file = paste0(path, "/report.pdf"),
       params = params,
       envir = new.env(parent = globalenv())
     )

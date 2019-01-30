@@ -4,7 +4,7 @@
 #'   gadget](https://shiny.rstudio.com/articles/gadgets.html) and
 #'   [addin](http://rstudio.github.io/rstudioaddins/) that allows you to
 #'   choose which analyses to run and build a report.
-#'   Appears as "Build Report" in the RStudio Addins menu.
+#'   Appears as "Build report" in the RStudio Addins menu.
 #'
 #'
 #' @export
@@ -32,7 +32,9 @@ report_addin <- function() {
         shiny::textInput("df", "Data", value = defaultData),
         shiny::textInput("path", "Output File Path"),
         shiny::textInput("proj4", "Projection (proj.4 string)")
-      ), miniUI::miniContentPanel(
+      ),
+      uiOutput("pending"),
+      miniUI::miniContentPanel(
         shiny::checkboxGroupInput(
           "stats",
           "Calculate which movement statistics?",
@@ -72,9 +74,31 @@ report_addin <- function() {
   )
 
   server <- function(input, output, session) {
+    reactive_data <- reactive({
+      dataString <- input$df
+
+      if (!nzchar(dataString)) {
+        return(errorMessage("data", "No dataset available."))
+      }
+
+      if (!exists(dataString, envir = .GlobalEnv)) {
+        return(errorMessage("data", paste("No dataset named '", dataString, "' available.")))
+      }
+
+      get(dataString, envir = .GlobalEnv)
+    })
+
+    output$pending <- renderUI({
+      data <- reactive_data()
+      if (isErrorMessage(data)) {
+        h4(style = "color: #AA7732;", data$message)
+      }
+    })
+
+
     shiny::observeEvent(input$done, { # a couple things to think about -- how to specify data, output file?
       shiny::stopApp(build_report(
-        df = input$df,
+        df = reactive_data(),
         path = input$path,
         stats = input$stats,
         construct = input$construct,
@@ -86,10 +110,10 @@ report_addin <- function() {
   }
 
   app <- shiny::shinyApp(ui, server, options = list(quiet = TRUE))
-  shiny::runGadget(app, viewer = shiny::dialogViewer("Render reprex"))
+  shiny::runGadget(app, viewer = shiny::dialogViewer("Build movement report"))
 }
 
-# wrapper function for shiny columns
+# wrapper function for shiny columns from rstudio/addinexamples
 stableColumnLayout <- function(...) {
   dots <- list(...)
   n <- length(dots)
@@ -100,4 +124,17 @@ stableColumnLayout <- function(...) {
       shiny::div(class = class, el)
     })
   )
+}
+
+# error message class from rstudio/addinexamples
+errorMessage <- function(type, message) {
+  structure(
+    list(type = type, message = message),
+    class = "error_message"
+  )
+}
+
+# error message check from rstudio/addinexamples
+isErrorMessage <- function(object) {
+  inherits(object, "error_message")
 }
