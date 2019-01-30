@@ -12,6 +12,14 @@ construct <- function(df, type = c("klocoh", "akde"), proj4) {
   lhs <- NULL
   UD <- NULL
 
+
+  if ("klocoh" %in% type && !requireNamespace("tlocoh", quietly = TRUE)) {
+    stop("Package tlocoh must be installed to run klocoh.\n",
+         "Please see `http://tlocoh.r-forge.r-project.org/#installation` for installation instructions.",
+         call. = FALSE
+    )
+  }
+
   if ("akde" %in% type) {
     message("Be aware, fitting an akde can take several minutes.")
   }
