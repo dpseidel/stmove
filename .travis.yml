@@ -6,8 +6,13 @@ cache: packages
 sudo: required
 dist: trusty
 
-r_packages:
-  - covr
+env:
+  global:
+  # don't treat missing suggested packages as error
+  - _R_CHECK_FORCE_SUGGESTS_=false
+  # switch off vdiffr by default
+  - VDIFFR_RUN_TESTS=false
+
 
 before_install:
   - sudo add-apt-repository -y ppa:opencpu/imagemagick

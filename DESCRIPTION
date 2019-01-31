@@ -22,7 +22,8 @@ Remotes:
   url::http://download.r-forge.r-project.org/src/contrib/tlocoh_1.40.05.tar.gz
 Suggests: 
     testthat,
-    vdiffr,
+    tlocoh,
+    vdiffr (>= 0.3.0),
     lunar,
     rmarkdown,
     forecast,
