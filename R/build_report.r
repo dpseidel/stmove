@@ -2,12 +2,13 @@
 #'
 #' @inheritParams interval_stats
 #' @inheritParams rolling_stats
-#' @param path output file path
+#' @param path absolute file path for output .pdf
 #' @param stats a character vector of stats to calculate, options include: "rolling",
 #' "diurnal", "lunar", and "seasonal"
 #' @param construct a character vector indicating which spacetime construction methods to use.
 #' options include "klocoh" and "akde"
-#' @param wavelet a logical indicating whether or not to produce wavelet visualization
+#' @param wavelet  a character vector indicating which variables to calculate wavelet analysis on,
+#' options in "dist", "rel.angle", "acf_dist", "acf_ang", and "ccf".
 #' @inheritParams construct
 #'
 #' @export
@@ -15,9 +16,8 @@
 #' \donttest{
 #' build_report(AG195, proj4 = "+proj=utm +zone=33 +south +datum=WGS84 +units=m +no_defs")
 #' }
-build_report <- function(df, path = ".", stats = c("rolling", "diurnal"),
-                         construct = c("klocoh"), proj4,
-                         seas = NULL, wavelet = T) {
+build_report <- function(df, path, proj4, stats = c("rolling", "diurnal"),
+                         construct = c("klocoh"), seas = NULL, wavelet = NULL) {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop("Package rmarkdown must be installed to build reports. Please install it.",
       call. = FALSE
@@ -35,25 +35,28 @@ build_report <- function(df, path = ".", stats = c("rolling", "diurnal"),
 
   if (length(unique(df$id)) > 1) {
     # population report
-    rmarkdown::render("pop.Rmd",
-      output_file = paste0(path, "/population.pdf"),
+    rmarkdown::render(system.file("reports", "pop.Rmd", package = "stmove"),
+      output_file = file.path(path, "population.pdf"),
       params = list(df = df, proj4 = proj4),
-      envir = new.env(parent = globalenv())
+      envir = new.env(parent = globalenv()),
+      clean = TRUE
     )
     # individual reports
     ids <- unique(df$id)
     for (i in ids) {
-      rmarkdown::render("report.Rmd",
-        output_file = paste0(path, "/report_", i, ".pdf"),
+      rmarkdown::render(system.file("reports", "report.Rmd", package = "stmove"),
+        output_file = file.path(path, paste0("report_", i, ".pdf")),
         params = modify_list(params, list(df = dplyr::filter(df, .data$id == i))),
-        envir = new.env(parent = globalenv())
+        envir = new.env(parent = globalenv()),
+        clean = TRUE
       )
     }
   } else {
-    rmarkdown::render("report.Rmd",
-      output_file = paste0(path, "/report.pdf"),
+    rmarkdown::render(system.file("reports", "report.Rmd", package = "stmove"),
+      output_file = file.path(path, "report.pdf"),
       params = params,
-      envir = new.env(parent = globalenv())
+      envir = new.env(parent = globalenv()),
+      clean = TRUE
     )
   }
 }

@@ -4,8 +4,8 @@
 #' coefficients through time.
 #'
 #' @param df a dataframe with columns: x, y, date
-#' @param stats optional specifier of which variable to calculate wavelet analysis on.
-#' dist", "ang", "autoD", "autoA", "cross"
+#' @param stats a character vector indicating which variables to calculate wavelet analysis on,
+#' options in "dist", "rel.angle", "acf_dist", "acf_ang", and "ccf". By default, analysis is run on all 5.
 #' @param plot a logical indicating whether or not to return a histogram of the distribution
 #' @export
 #' @examples

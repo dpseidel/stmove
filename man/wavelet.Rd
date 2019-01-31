@@ -10,8 +10,8 @@ wavelet(df, stats = c("dist", "rel.angle", "acf_dist", "acf_ang", "ccf"),
 \arguments{
 \item{df}{a dataframe with columns: x, y, date}
 
-\item{stats}{optional specifier of which variable to calculate wavelet analysis on.
-dist", "ang", "autoD", "autoA", "cross"}
+\item{stats}{a character vector indicating which variables to calculate wavelet analysis on,
+options in "dist", "rel.angle", "acf_dist", "acf_ang", and "ccf". By default, analysis is run on all 5.}
 
 \item{plot}{a logical indicating whether or not to return a histogram of the distribution}
 }

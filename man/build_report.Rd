@@ -4,13 +4,16 @@
 \alias{build_report}
 \title{Build a report with basic spatio-temporal movement computations}
 \usage{
-build_report(df, path = ".", stats = c("rolling", "diurnal"),
-  construct = c("klocoh"), proj4, seas = NULL, wavelet = T)
+build_report(df, path, proj4, stats = c("rolling", "diurnal"),
+  construct = c("klocoh"), seas = NULL, wavelet = NULL)
 }
 \arguments{
 \item{df}{a dataframe containing columns "x", "y", and "date"}
 
-\item{path}{output file path}
+\item{path}{absolute file path for output .pdf}
+
+\item{proj4}{a character string indicating the proj.4 definition of the
+coordinate reference system defining the relocations}
 
 \item{stats}{a character vector of stats to calculate, options include: "rolling",
 "diurnal", "lunar", and "seasonal"}
@@ -18,14 +21,12 @@ build_report(df, path = ".", stats = c("rolling", "diurnal"),
 \item{construct}{a character vector indicating which spacetime construction methods to use.
 options include "klocoh" and "akde"}
 
-\item{proj4}{a character string indicating the proj.4 definition of the
-coordinate reference system defining the relocations}
-
 \item{seas}{a named numeric vector including the start date of each season
 indicated by the Julian day (see \code{lubridate::yday} for easy conversion).
 Required if \code{type == "seasonal"}}
 
-\item{wavelet}{a logical indicating whether or not to produce wavelet visualization}
+\item{wavelet}{a character vector indicating which variables to calculate wavelet analysis on,
+options in "dist", "rel.angle", "acf_dist", "acf_ang", and "ccf".}
 }
 \description{
 Build a report with basic spatio-temporal movement computations
