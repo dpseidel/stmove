@@ -33,7 +33,7 @@ wavelet <- (!is.null(params$wavelet))
 # Visualize my trajectory
 
 ```{r}
-plot(params$df$x, params$df$y, type = "p")
+plot(params$df$x, params$df$y, type = "p", xlab = "Easting",  ylab = "Northing")
 ```
 
 # Distributions:
@@ -172,7 +172,7 @@ seasonal_stats %>% gather("stat", "estimate", -1:-2) %>%
 `r if (wavelet) '# Visualizing Periodicity'`
 
 ```{r eval = wavelet}
-wave <<- wavelet(params$df, stats = params$wavelet)
+wave <<- wavelet(params$df, stats = params$wavelet, useRaster = TRUE)
 ```
 
 `r if (construct) '# Space Use Constructions'`

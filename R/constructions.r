@@ -5,6 +5,7 @@
 #' @param proj4 a character string indicating the proj.4 definition of the
 #' coordinate reference system defining the relocations
 #'
+#' @export
 construct <- function(df, type = c("klocoh", "akde"), proj4) {
   # we may want to consider allowing user specification of some tlocoh arguments.
 

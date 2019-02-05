@@ -5,7 +5,7 @@
 \title{Wavelet analyses}
 \usage{
 wavelet(df, stats = c("dist", "rel.angle", "acf_dist", "acf_ang", "ccf"),
-  plot = T)
+  plot = T, ...)
 }
 \arguments{
 \item{df}{a dataframe with columns: x, y, date}
@@ -14,6 +14,8 @@ wavelet(df, stats = c("dist", "rel.angle", "acf_dist", "acf_ang", "ccf"),
 options in "dist", "rel.angle", "acf_dist", "acf_ang", and "ccf". By default, analysis is run on all 5.}
 
 \item{plot}{a logical indicating whether or not to return a histogram of the distribution}
+
+\item{...}{Arguments passed to \link[dplR]{wavelet.plot}. Only relevant when \code{plot = T}.}
 }
 \description{
 Build morelet wavelet diagrams for step size, turning angle, auto and cross correlation
