@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{kalman}
 \alias{kalman}
-\title{Apply Kalman smoothing to fill gaps in data}
+\title{Kalman Smoothing with Auto ARIMA}
 \usage{
 kalman(df)
 }
@@ -10,5 +10,11 @@ kalman(df)
 \item{df}{a dataframe containing columns x, y, date representing relocations in space and time.}
 }
 \description{
-Apply Kalman smoothing to fill gaps in data
+Apply Kalman smoothing to interpolate missing values in trajectory.
+}
+\details{
+The ARIMA model fitting used in this optimized for rapid estimation of models for multiple time series using conditional sums of squares (the final model still uses maximum likelihood estimation) and using step-wise model selection.
+}
+\seealso{
+\link[forecast]{auto.arima} \link{KalmanSmooth}
 }

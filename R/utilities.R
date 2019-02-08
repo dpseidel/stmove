@@ -50,9 +50,13 @@ create_telemetry <- function(df, proj4) {
   return(mv)
 }
 
-#' Apply Kalman smoothing to fill gaps in data
+#' Kalman Smoothing with Auto ARIMA
+#'
+#' Apply Kalman smoothing to interpolate missing values in trajectory.
 #'
 #' @param df a dataframe containing columns x, y, date representing relocations in space and time.
+#' @details The ARIMA model fitting used in this optimized for rapid estimation of models for multiple time series using conditional sums of squares (the final model still uses maximum likelihood estimation) and using step-wise model selection.
+#' @seealso \link[forecast]{auto.arima} \link{KalmanSmooth}
 #' @export
 kalman <- function(df) {
   if (!requireNamespace(c("forecast"), quietly = TRUE)) {
