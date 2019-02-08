@@ -1,10 +1,10 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[![Travis build
-status](https://travis-ci.com/dpseidel/stmove.svg?branch=master)](https://travis-ci.com/dpseidel/stmove)
+[![Travis Build
+Status](https://travis-ci.com/dpseidel/stmove.svg?token=ZVrezsGfh5uSAe6FpgAU&branch=master)](https://travis-ci.com/dpseidel/stmove)
 [![Codecov test
-coverage](https://codecov.io/gh/dpseidel/stmove/branch/master/graph/badge.svg)](https://codecov.io/github/dpseidel/stmove?branch=master)
+coverage](https://codecov.io/gh/dpseidel/stmove/branch/master/graph/badge.svg?token=A1gUYaWSSY)](https://codecov.io/gh/dpseidel/stmove)
 
 # stmove
 
