@@ -81,7 +81,7 @@ interval_stats <- function(df, type = "diurnal", seas = NULL) {
     traj$phase <- ifelse(traj$phase %in% c("Full", "Waning"), "Full-Waning", "New-Waxing")
     traj$interval_start <- cut(floor_date(traj$date, "1 day"),
                                breaks = unique(interval_starts), # needs testing
-                               right = T, include.lowest = T
+                               right = F, include.lowest = T
     )
 
     quocol <- sym("phase")
