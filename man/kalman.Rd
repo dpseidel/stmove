@@ -9,6 +9,9 @@ kalman(df)
 \arguments{
 \item{df}{a dataframe containing columns x, y, date representing relocations in space and time.}
 }
+\value{
+a dataframe with additional binary column \code{real} flagging those points whose positions were interpolated.
+}
 \description{
 Apply Kalman smoothing to interpolate missing values in trajectory.
 }
