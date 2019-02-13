@@ -68,19 +68,20 @@ interval_stats <- function(df, type = "diurnal", seas = NULL) {
     traj$phase <- lunar::lunar.phase(traj$date, name = T)
 
     # the following need specific testing, and to be cleaned up!
+    # yeah it doesn't work when the trajectory crosses year end... 363-5 for instance. SAT676
     full <- unique(lubridate::floor_date(traj[traj$phase == "Full", "date"], "1 day"))[
       c(TRUE, (diff(unique(lubridate::floor_date(traj[traj$phase == "Full", "date"], "1 day"))) != 1))
     ]
     new <- unique(lubridate::floor_date(traj[traj$phase == "New", "date"], "1 day"))[
       c(TRUE, (diff(unique(lubridate::floor_date(traj[traj$phase == "New", "date"], "1 day"))) != 1))
     ]
-    # odd order of yday and c to avoid automatic switching to local tz
-    interval_starts <- sort(c(yday(traj$date[1]), yday(full), yday(new), yday(traj$date[nrow(traj)])))
-
+    
+    interval_starts <- c(floor_date(traj$date[1], "1 day"), sort(c(full, new)), floor_date(traj$date[nrow(traj)], "1 day"))
+    
     traj$phase <- ifelse(traj$phase %in% c("Full", "Waning"), "Full-Waning", "New-Waxing")
-    traj$interval_start <- cut(lubridate::yday(traj$date),
-      breaks = unique(interval_starts), # needs testing
-      right = F, include.lowest = T
+    traj$interval_start <- cut(floor_date(traj$date, "1 day"),
+                               breaks = unique(interval_starts), # needs testing
+                               right = T, include.lowest = T
     )
 
     quocol <- sym("phase")
