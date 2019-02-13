@@ -32,7 +32,7 @@ dist_map <- function(df, proj4) {
 #'
 #' @param df a dataframe containing columns "x", "y", "date", and "id"
 #' @export
-#' @importFrom ggplot2 geom_segment
+#' @importFrom ggplot2 geom_segment theme_classic theme element_text
 plot_timeline <- function(df) {
   df %>%
     group_by(.data$id) %>%

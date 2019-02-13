@@ -55,7 +55,7 @@ create_telemetry <- function(df, proj4) {
 #' Apply Kalman smoothing to interpolate missing values in trajectory.
 #'
 #' @param df a dataframe containing columns x, y, date representing relocations in space and time.
-#' @return a dataframe with additional binary column `real` flagging those points whose positions were interpolated. 
+#' @return a dataframe with additional binary column `real` flagging those points whose positions were interpolated.
 #' @details The ARIMA model fitting used in this optimized for rapid estimation of models for multiple time series using conditional sums of squares (the final model still uses maximum likelihood estimation) and using step-wise model selection.
 #' @seealso \link[forecast]{auto.arima} \link{KalmanSmooth}
 #' @export
@@ -87,10 +87,11 @@ kalman <- function(df) {
     lat[j] <- kr$smooth[j, num]
   }
   df$y <- lat
-  
-  df %>% 
-    mutate(real = ifelse(is.na(R2n), 0, 1)) %>% 
-    select(-dx, -dy, -dist, -dt, -R2n, -abs.angle, -rel.angle, -burst) # drop ltraj columns, except id. 
+
+  df %>%
+    dplyr::mutate(real = ifelse(is.na(.data$R2n), 0, 1)) %>%
+    dplyr::select(-.data$dx, -.data$dy, -.data$dist, -.data$dt, -.data$R2n,
+                  -.data$abs.angle, -.data$rel.angle, -.data$burst) # drop ltraj columns, except id.
 }
 
 # More performant modifyList without recursion

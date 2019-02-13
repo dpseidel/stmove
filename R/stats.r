@@ -43,6 +43,7 @@ rolling_stats <- function(df) {
 #' @param seas a named numeric vector including the start date of each season
 #' indicated by the Julian day (see `lubridate::yday` for easy conversion).
 #' Required if `type == "seasonal"`
+#' @importFrom lubridate floor_date
 interval_stats <- function(df, type = "diurnal", seas = NULL) {
   # Consider adapting this to do multiple ids at once or for full ltraj compatability
 
@@ -75,9 +76,9 @@ interval_stats <- function(df, type = "diurnal", seas = NULL) {
     new <- unique(lubridate::floor_date(traj[traj$phase == "New", "date"], "1 day"))[
       c(TRUE, (diff(unique(lubridate::floor_date(traj[traj$phase == "New", "date"], "1 day"))) != 1))
     ]
-    
+
     interval_starts <- c(floor_date(traj$date[1], "1 day"), sort(c(full, new)), floor_date(traj$date[nrow(traj)], "1 day"))
-    
+
     traj$phase <- ifelse(traj$phase %in% c("Full", "Waning"), "Full-Waning", "New-Waxing")
     traj$interval_start <- cut(floor_date(traj$date, "1 day"),
                                breaks = unique(interval_starts), # needs testing
