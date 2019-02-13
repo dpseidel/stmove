@@ -39,10 +39,12 @@ plot_timeline <- function(df) {
     summarise(start_date = min(.data$date), end_date = max(.data$date)) %>%
     ggplot() + geom_segment(aes(
       x = .data$start_date, xend = .data$end_date,
-      y = .data$id, yend = .data$id, color = .data$id
+      y = .data$id, yend = .data$id
     ),
     linetype = 1, size = 2
     ) +
     labs(title = "Timeline Plot of Tagged Individuals",
-         x = "Date",  y = "ID", color = "ID")
+         x = "Date",  y = "ID", color = "ID") +
+    theme_classic() +
+    theme(legend.position = "none", plot.title = element_text(hjust = .5))
 }
