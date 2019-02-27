@@ -22,5 +22,5 @@ calculate ref value by rounding the first timestamp in \code{df}}
 Regularize a near-regular trajectory
 }
 \seealso{
-setNA sett0 subsample
+\link[adehabitatLT]{setNA} \link[adehabitatLT]{sett0} \link[adehabitatLT]{subsample}
 }

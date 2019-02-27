@@ -8,7 +8,7 @@
 #' calculate ref value by rounding the first timestamp in `df`
 #'
 #' @export
-#' @seealso setNA sett0 subsample
+#' @seealso \link[adehabitatLT]{setNA} \link[adehabitatLT]{sett0} \link[adehabitatLT]{subsample}
 regularize <- function(df, dt, units = "min", tol = dt / 10, ref = NULL) {
   traj <- adehabitatLT::dl(df)
 
@@ -19,7 +19,7 @@ regularize <- function(df, dt, units = "min", tol = dt / 10, ref = NULL) {
   traj <- adehabitatLT::setNA(traj, date.ref = ref, dt = dt, units = units)
   traj <- adehabitatLT::sett0(traj, date.ref = ref, dt = dt, units = units)
 
-  adehabitatLT::ld(traj) %>% select(names(df))
+  adehabitatLT::ld(traj) %>% dplyr::select(names(df))
 }
 
 
