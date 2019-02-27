@@ -22,5 +22,5 @@ calculate ref value by rounding the first timestamp in \code{df}}
 Regularize a near-regular trajectory
 }
 \seealso{
-\code{adehabitatLT::setNA} \code{adehabitatLT::sett0} \code{adehabitatLT::subsample}
+setNA sett0 subsample
 }

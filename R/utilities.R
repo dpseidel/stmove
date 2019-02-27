@@ -8,7 +8,7 @@
 #' calculate ref value by rounding the first timestamp in `df`
 #'
 #' @export
-#' @seealso `adehabitatLT::setNA` `adehabitatLT::sett0` `adehabitatLT::subsample`
+#' @seealso setNA sett0 subsample
 regularize <- function(df, dt, units = "min", tol = dt / 10, ref = NULL) {
   traj <- adehabitatLT::dl(df)
 
@@ -19,7 +19,7 @@ regularize <- function(df, dt, units = "min", tol = dt / 10, ref = NULL) {
   traj <- adehabitatLT::setNA(traj, date.ref = ref, dt = dt, units = units)
   traj <- adehabitatLT::sett0(traj, date.ref = ref, dt = dt, units = units)
 
-  return(adehabitatLT::ld(traj))
+  adehabitatLT::ld(traj) %>% select(names(df))
 }
 
 
@@ -66,6 +66,8 @@ kalman <- function(df) {
     )
   }
 
+  df$real <- !is.na(df$x)
+
   # Replace NA values in longitude with Kalman Smoothed estimates
   lon <- df$x
   fit <- forecast::auto.arima(df$x)
@@ -88,10 +90,7 @@ kalman <- function(df) {
   }
   df$y <- lat
 
-  df %>%
-    dplyr::mutate(real = ifelse(is.na(.data$R2n), 0, 1)) %>%
-    dplyr::select(-.data$dx, -.data$dy, -.data$dist, -.data$dt, -.data$R2n,
-                  -.data$abs.angle, -.data$rel.angle, -.data$burst) # drop ltraj columns, except id.
+  return(df)
 }
 
 # More performant modifyList without recursion
