@@ -21,11 +21,9 @@ Remotes:
   thomasp85/patchwork,
   url::http://download.r-forge.r-project.org/src/contrib/tlocoh_1.40.05.tar.gz
 Suggests: 
-    testthat,
     tlocoh,
+    testthat,
     vdiffr (>= 0.3.0),
-    lunar, 
-    rmarkdown,
     imputeTS,
     covr, 
     rstudioapi, 
@@ -44,7 +42,8 @@ Imports:
     RcppRoll,
     sp,
     TTR,
-    zoo,
-    tidyr
+    tidyr,
+    lunar, 
+    rmarkdown
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1

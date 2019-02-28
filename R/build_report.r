@@ -18,12 +18,6 @@
 #' }
 build_report <- function(df, path, proj4, stats = c("rolling", "diurnal"),
                          construct = c("klocoh"), seas = NULL, wavelet = NULL) {
-  if (!requireNamespace("rmarkdown", quietly = TRUE)) {
-    stop("Package rmarkdown must be installed to build reports. Please install it.",
-      call. = FALSE
-    )
-  }
-
   params <- list(
     df = df, stats = stats, construct = construct,
     proj4 = proj4, seas = seas, wavelet = wavelet

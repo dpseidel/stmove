@@ -59,11 +59,6 @@ interval_stats <- function(df, type = "diurnal", seas = NULL) {
 
   # lunar cycle
   if (type == "lunar") {
-    if (!requireNamespace("lunar", quietly = TRUE)) {
-      stop("Package lunar must be installed to calculate summary statistics for lunar cycles. Please install it.",
-        call. = FALSE
-      )
-    }
     # may want to allow user specification of "shift" parameter to adjust exactly to local time.
 
     traj$phase <- lunar::lunar.phase(traj$date, name = T)
@@ -114,8 +109,6 @@ interval_stats <- function(df, type = "diurnal", seas = NULL) {
     quocol <- sym("seas")
   }
 
-
-  # TODO add some tidy eval so that the group by can include `phase` when type == "lunar"
   traj %>%
     group_by(.data$interval_start, !!quocol) %>%
     summarise(
@@ -127,19 +120,4 @@ interval_stats <- function(df, type = "diurnal", seas = NULL) {
       acf_ang = cor(.data$rel.angle, c(.data$rel.angle[-1], NA), "p"),
       ccf = cor(dist, .data$rel.angle, "p")
     )
-
-  # For future reference:
-  # .colMeans provides a nice way to do means this without tidyverse
-  # mean_dist = .colMeans(dist, 12 * n_fixes_hr, length(traj$dist) / (12 * n_fixes_hr), na.rm = T)
-  # sd will require more manipulation
 }
-
-
-
-#### Notes
-# if we wanted to be really flexible we could build this as an S3 method that could accept
-# either ltraj and dataframes and handle them appropriately.
-# if we do so we could pitch our package as an extension of adehabitat etc.
-
-# we'll want to mimic the "next plot" functionality of plot(fit) etc.
-# likely will need to make an S3 class method for this.
