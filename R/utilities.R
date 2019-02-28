@@ -50,14 +50,14 @@ create_telemetry <- function(df, proj4) {
   return(mv)
 }
 
-#' Kalman Smoothing with Auto ARIMA
+#' Kalman Smoothing with Structural Time Series
 #'
-#' Apply Kalman smoothing to interpolate missing values in trajectory.
+#' Interpolate missing values in a trajectory.
 #'
 #' @param df a dataframe containing columns x, y, date representing relocations in space and time.
 #' @return a dataframe with additional binary column `real` flagging those points whose positions were interpolated.
-#' @details The replacement points are generated using a structural model fitted by maximum likelihood.
-#' @seealso \link[imputeTS]{na.kalman}
+#' @details The replacement points are generated using a structural time series model fitted by maximum likelihood.
+#' @seealso \link[imputeTS]{na.kalman} \link[StructTS]{StructTS}
 #' @export
 kalman <- function(df) {
     if (!requireNamespace(c("imputeTS"), quietly = TRUE)) {

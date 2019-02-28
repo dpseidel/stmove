@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{kalman}
 \alias{kalman}
-\title{Kalman Smoothing with Auto ARIMA}
+\title{Kalman Smoothing with Structural Time Series}
 \usage{
 kalman(df)
 }
@@ -13,11 +13,11 @@ kalman(df)
 a dataframe with additional binary column \code{real} flagging those points whose positions were interpolated.
 }
 \description{
-Apply Kalman smoothing to interpolate missing values in trajectory.
+Interpolate missing values in a trajectory.
 }
 \details{
-The replacement points are generated using a structural model fitted by maximum likelihood.
+The replacement points are generated using a structural time series model fitted by maximum likelihood.
 }
 \seealso{
-\link[imputeTS]{na.kalman}
+\link[imputeTS]{na.kalman} \link[StructTS]{StructTS}
 }
