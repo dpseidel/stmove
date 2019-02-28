@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{kalman}
 \alias{kalman}
-\title{Kalman Smoothing with Structural Modeling}
+\title{Kalman Smoothing with Auto ARIMA}
 \usage{
 kalman(df)
 }
