@@ -69,14 +69,14 @@ kalman <- function(df) {
     df$real <- !is.na(df$x)
     
     # Replace NA values in longitude with Kalman Smoothed estimates
-    x_replace <- na.kalman(df$x, model='StructTS', smooth=TRUE)
+    x_replace <- imputeTS::na.kalman(df$x, model='StructTS', smooth=TRUE)
     id.na <- which(is.na(df$x))
     for (j in id.na) {
         df$x[j] <- x_replace[j]
     }
     
     # Replace NA values in latitude with Kalman Smoothed estimates
-    y_replace <- na.kalman(df$y, model='StructTS', smooth=TRUE)
+    y_replace <- imputeTS::na.kalman(df$y, model='StructTS', smooth=TRUE)
     id.na <- which(is.na(df$y))
     for (j in id.na) {
         df$y[j] <- y_replace[j]
