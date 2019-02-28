@@ -56,41 +56,33 @@ create_telemetry <- function(df, proj4) {
 #'
 #' @param df a dataframe containing columns x, y, date representing relocations in space and time.
 #' @return a dataframe with additional binary column `real` flagging those points whose positions were interpolated.
-#' @details The ARIMA model fitting used in this optimized for rapid estimation of models for multiple time series using conditional sums of squares (the final model still uses maximum likelihood estimation) and using step-wise model selection.
-#' @seealso \link[forecast]{auto.arima} \link{KalmanSmooth}
+#' @details The replacement points are generated using a structural model fitted by maximum likelihood.
+#' @seealso \link[imputeTS]{na.kalman}
 #' @export
 kalman <- function(df) {
-  if (!requireNamespace(c("forecast"), quietly = TRUE)) {
-    stop("Package forecast must be installed for kalman smoothing. Please install it.",
-      call. = FALSE
-    )
-  }
-
-  df$real <- !is.na(df$x)
-
-  # Replace NA values in longitude with Kalman Smoothed estimates
-  lon <- df$x
-  fit <- forecast::auto.arima(df$x)
-  kr <- KalmanSmooth(df$x, fit$model)
-  id.na <- which(is.na(df$x))
-  num <- ncol(kr$smooth)
-  for (j in id.na) {
-    lon[j] <- kr$smooth[j, num]
-  }
-  df$x <- lon
-
-  # Replace NA values in latitude with Kalman Smoothed estimates
-  lat <- df$y
-  fit <- forecast::auto.arima(df$y)
-  kr <- KalmanSmooth(df$y, fit$model)
-  id.na <- which(is.na(df$y))
-  num <- ncol(kr$smooth)
-  for (j in id.na) {
-    lat[j] <- kr$smooth[j, num]
-  }
-  df$y <- lat
-
-  return(df)
+    if (!requireNamespace(c("forecast"), quietly = TRUE)) {
+        stop("Package forecast must be installed for kalman smoothing. Please install it.",
+             call. = FALSE
+        )
+    }
+    
+    df$real <- !is.na(df$x)
+    
+    # Replace NA values in longitude with Kalman Smoothed estimates
+    x_replace <- na.kalman(df$x, model='StructTS', smooth=TRUE)
+    id.na <- which(is.na(df$x))
+    for (j in id.na) {
+        df$x[j] <- x_replace[j]
+    }
+    
+    # Replace NA values in latitude with Kalman Smoothed estimates
+    y_replace <- na.kalman(df$y, model='StructTS', smooth=TRUE)
+    id.na <- which(is.na(df$y))
+    for (j in id.na) {
+        df$y[j] <- y_replace[j]
+    }
+    
+    return(df)
 }
 
 # More performant modifyList without recursion
