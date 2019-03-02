@@ -19,5 +19,5 @@ Interpolate missing values in a trajectory.
 The replacement points are generated using a structural time series model fitted by maximum likelihood.
 }
 \seealso{
-\link[imputeTS]{na.kalman} \link[StructTS]{StructTS}
+\link[imputeTS]{na.kalman}
 }

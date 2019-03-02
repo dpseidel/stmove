@@ -3,9 +3,11 @@
 #' @param df a dataframe containing columns "x", "y", "date", and "id"
 #' @param proj4 a character string indicating the proj.4 definition of the
 #' coordinate reference system defining the relocations
+#' @param labels logical, indicating whether or not to label points with IDs, implemented using
+#' \link[ggrepel]{geom_text_repel}
 #' @export
 #' @importFrom ggplot2 ggplot aes geom_sf labs
-dist_map <- function(df, proj4) {
+dist_map <- function(df, proj4, labels = TRUE) {
   mean_sf <- df %>%
     dplyr::group_by(.data$id) %>%
     dplyr::summarise(
@@ -15,14 +17,18 @@ dist_map <- function(df, proj4) {
     ) %>%
     sf::st_as_sf(coords = c("meanX", "meanY"), remove = FALSE, crs = proj4)
 
-  print(ggplot(data = mean_sf) +
+ p <- ggplot(data = mean_sf) +
     geom_sf(aes(color = .data$meanyear, fill = .data$meanyear)) +
-    ggrepel::geom_text_repel(mapping = aes(
-      x = .data$meanX, y = .data$meanY,
-      label = .data$id, color = .data$meanyear
-    )) +
     labs(title = "General Spatial and Temporal Distribution of Individuals",
-    x = "Latitude",  y = "Longitude", color = "Year", fill = "Year"))
+    x = "Latitude",  y = "Longitude", color = "Year", fill = "Year")
+
+ if(labels == TRUE) {
+   print(p + ggrepel::geom_text_repel(mapping = aes(
+     x = .data$meanX, y = .data$meanY,
+     label = .data$id, color = .data$meanyear
+   )))
+ } else {print(p)}
+
 
   return(mean_sf)
 }

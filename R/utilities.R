@@ -57,7 +57,7 @@ create_telemetry <- function(df, proj4) {
 #' @param df a dataframe containing columns x, y, date representing relocations in space and time.
 #' @return a dataframe with additional binary column `real` flagging those points whose positions were interpolated.
 #' @details The replacement points are generated using a structural time series model fitted by maximum likelihood.
-#' @seealso \link[imputeTS]{na.kalman} \link[StructTS]{StructTS}
+#' @seealso \link[imputeTS]{na.kalman}
 #' @export
 kalman <- function(df) {
     if (!requireNamespace(c("imputeTS"), quietly = TRUE)) {

@@ -4,13 +4,16 @@
 \alias{dist_map}
 \title{Spatial Temporal Distribution Plot}
 \usage{
-dist_map(df, proj4)
+dist_map(df, proj4, labels = TRUE)
 }
 \arguments{
 \item{df}{a dataframe containing columns "x", "y", "date", and "id"}
 
 \item{proj4}{a character string indicating the proj.4 definition of the
 coordinate reference system defining the relocations}
+
+\item{labels}{logical, indicating whether or not to label points with IDs, implemented using
+\link[ggrepel]{geom_text_repel}}
 }
 \description{
 Spatial Temporal Distribution Plot
