@@ -55,12 +55,12 @@ create_telemetry <- function(df, proj4) {
 #' Interpolate missing values in a trajectory.
 #'
 #' @param df a dataframe containing columns x, y, date representing relocations in space and time.
-#' @param warn logical, should warnings be issued if interpolation is above 5% ?
+#' @param warn logical, should warnings be issued if interpolation is above 5\%?
 #' @return a dataframe with additional binary column `real` flagging those points whose positions were interpolated.
 #' @details The replacement points are generated using a structural time series model fitted by maximum likelihood.
 #' @seealso \link[imputeTS]{na.kalman}
 #' @export
-kalman <- function(df, warn = T) {
+kalman <- function(df, warn = TRUE) {
   if (!requireNamespace(c("imputeTS"), quietly = TRUE)) {
     stop("Package imputeTS must be installed for kalman smoothing. Please install it.",
       call. = FALSE
@@ -75,7 +75,7 @@ kalman <- function(df, warn = T) {
   # Replace NA values in latitude with Kalman Smoothed estimates
   df$y <- imputeTS::na.kalman(df$y, model = "StructTS", smooth = TRUE)
 
-  if (warn == T) {
+  if (warn == TRUE) {
     if (sum(!df$real) / nrow(df) > .05) {
       warning(paste(
         "kalman interpolated", round(sum(!df$real) / nrow(df), 2) * 100,
