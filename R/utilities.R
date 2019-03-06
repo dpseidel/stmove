@@ -60,21 +60,42 @@ create_telemetry <- function(df, proj4) {
 #' @seealso \link[imputeTS]{na.kalman}
 #' @export
 kalman <- function(df) {
-    if (!requireNamespace(c("imputeTS"), quietly = TRUE)) {
-        stop("Package imputeTS must be installed for kalman smoothing. Please install it.",
-             call. = FALSE
-        )
-    }
+  if (!requireNamespace(c("imputeTS"), quietly = TRUE)) {
+    stop("Package imputeTS must be installed for kalman smoothing. Please install it.",
+      call. = FALSE
+    )
+  }
 
-    df$real <- !is.na(df$x)
+  df$real <- !is.na(df$x)
 
-    # Replace NA values in longitude with Kalman Smoothed estimates
-    df$x <- imputeTS::na.kalman(df$x, model='StructTS', smooth=TRUE)
+  # Replace NA values in longitude with Kalman Smoothed estimates
+  df$x <- imputeTS::na.kalman(df$x, model = "StructTS", smooth = TRUE)
 
-    # Replace NA values in latitude with Kalman Smoothed estimates
-    df$y <- imputeTS::na.kalman(df$y, model='StructTS', smooth=TRUE)
+  # Replace NA values in latitude with Kalman Smoothed estimates
+  df$y <- imputeTS::na.kalman(df$y, model = "StructTS", smooth = TRUE)
 
-    return(df)
+  return(df)
+}
+
+
+#' Check dataframes conform to stmove style
+#'
+#' An (internal) helper function to check dataframes and provide helpful errors
+#'
+#' @param df a dataframe
+df_check <- function(df) {
+  if (any(!(c("x", "y", "date") %in% names(df)))) {
+    stop("stmove expects dataframes with columns 'x', 'y', and 'date', please include them.",
+      call. = FALSE
+    )
+  }
+
+  if (diff(range(diff(df$date))) != 0 || any(is.na(df))) {
+    stop("stmove expects dataframes with regular intervals and no missing values, consider
+          using `regularize()` and `kalman()` to regularize your data.",
+      call. = FALSE
+    )
+  }
 }
 
 # More performant modifyList without recursion
