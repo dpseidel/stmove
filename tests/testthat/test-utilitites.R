@@ -35,6 +35,17 @@ test_that("kalman interpolates NAs", {
   expect_false(any(is.na(kalman(reg_df)$y)))
 })
 
+test_that("kalman warns when over interpolating", {
+  df <- dplyr::tibble(
+    x = c(100, NA, 102:105),
+    y = c(800, NA, 802:805),
+    date = 1:6
+  )
+
+  expect_warning(kalman(df))
+  expect_silent(kalman(df, warn = F))
+})
+
 test_that("create_telemetry outputs a telemetry object", {
   expect_s4_class(create_telemetry(AG195, "+proj=utm +zone=33 +south"), "telemetry")
 })

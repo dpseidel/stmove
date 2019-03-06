@@ -4,10 +4,12 @@
 \alias{kalman}
 \title{Kalman Smoothing with Structural Time Series}
 \usage{
-kalman(df)
+kalman(df, warn = T)
 }
 \arguments{
 \item{df}{a dataframe containing columns x, y, date representing relocations in space and time.}
+
+\item{warn}{logical, should warnings be issued if interpolation is above 5% ?}
 }
 \value{
 a dataframe with additional binary column \code{real} flagging those points whose positions were interpolated.
