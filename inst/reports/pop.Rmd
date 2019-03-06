@@ -9,11 +9,11 @@ params:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
-```{r pop, messages = F}
-dist_map(params$df, params$proj4)
+```{r pop, messages = F,  fig.height = 4}
+dist <- dist_map(params$df, params$proj4)
 
 plot_timeline(params$df)
 ```

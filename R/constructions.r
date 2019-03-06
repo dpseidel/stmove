@@ -37,13 +37,14 @@ construct <- function(df, type = c("klocoh", "akde"), proj4) {
     lxy <- tlocoh::xyt.lxy(
       xy = matrix(c(dropNA$x, dropNA$y), ncol = 2),
       dt = dropNA$date, id = dropNA$id,
-      proj4string = sp::CRS(proj4)
+      proj4string = sp::CRS(proj4),
+      status = F
     )
 
     # lxy.thin.bursts.... unnecessary?
-    lxy <- tlocoh::lxy.nn.add(lxy, s = 0, k = k)
-    lhs <- tlocoh::lxy.lhs(lxy, k = k, s = 0, iso.levels = c(0.25, 0.50, 0.95), iso.add = T)
-
+    lxy <- tlocoh::lxy.nn.add(lxy, s = 0, k = k, status = F)
+    lhs <- tlocoh::lxy.lhs(lxy, k = k, s = 0, iso.levels = c(0.25, 0.50, 0.95),
+                           iso.add = T, status = F)
     plot(lhs, iso = T)
   }
 

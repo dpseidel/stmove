@@ -1,5 +1,5 @@
 ---
-title: "My Basic Movement Report"
+title: "Movement Report for `r params$df$id[1]`"
 subtitle: "created with pkg stmove" 
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: pdf_document
@@ -15,7 +15,9 @@ params:
 ```{r setup, include = F}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  echo = FALSE
+  echo = FALSE, 
+  message = FALSE,
+  warning = FALSE
 )
 
 library(stmove)
@@ -58,16 +60,16 @@ p2 <- ggplot(roll, aes(date, y = mean_ang)) +
   geom_point(na.rm = T) + geom_smooth(na.rm = T)
 
 
-p1 + p2 + plot_annotation("Mean Step Size & Turning Angle on a Rolling Interval")
+suppressMessages(p1 + p2 + plot_annotation("Mean Step Size & Turning Angle on a Rolling Interval"))
 
-ggplot(roll, aes(date)) +
+suppressMessages(ggplot(roll, aes(date)) +
   geom_smooth(aes(y = acf_ang, color = "Relative Angle"), na.rm = T) +
   geom_smooth(aes(y = acf_dist, color = "Step Size"), na.rm = T) +
   geom_smooth(aes(y = ccf, color = "Cross Correlation"), na.rm = T) +
   ylab("Correlation") +
   ggtitle("Lag 1 Auto and Cross Correlations in Turning Angle & Step Size",
     subtitle = "Rolling Window"
-  )
+  ))
 ```
 
 `r if (diurnal) '## Diurnal Cycle'`
@@ -84,7 +86,8 @@ plots <- purrr::map(
       diurnal_stats,
       aes(interval_start, y = !!y, color = TOD
       )
-    ) + geom_point(na.rm = T, size = .3) + geom_smooth(na.rm = T) +
+    ) + geom_point(na.rm = T, size = .3) + 
+      geom_smooth(na.rm = T) +
       xlab(NULL) +
       theme(axis.text.x = element_text(angle = 25, vjust = .5))
 
@@ -97,12 +100,12 @@ plots <- purrr::map(
   }
 )
 
-{
+suppressMessages({
   plots[[1]] + plots[[2]]
 } - {
   plots[[3]] + plots[[4]] + plots[[5]]
 } + plot_layout(nrow = 2) +
-  plot_annotation(title = "Diurnal Interval Statistics")
+  plot_annotation(title = "Diurnal Interval Statistics"))
 ```
 
 `r if (lunar) '## Lunar Cycle'`
@@ -120,8 +123,7 @@ plots <- purrr::map(
       aes(x = as.numeric(interval_start), y = !!y, color = phase
       )
     ) + 
-      geom_point(na.rm = T, size = .3) + 
-      geom_smooth(na.rm = T) +
+      geom_step(aes(group=1)) +
       #scale_x_continuous(breaks = 1:nlevels(lunar_stats$interval_start), 
       #                   labels = levels(lunar_stats$interval_start)) +
       xlab(NULL) +
