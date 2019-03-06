@@ -10,6 +10,7 @@
 \item{y}{y coordinate}
 \item{date}{timestamp of relocation}
 \item{id}{animal id}
+\item{real}{logical indicating empirical or interpolated position}
 }}
 \usage{
 AG195

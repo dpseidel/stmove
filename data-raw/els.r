@@ -3,13 +3,10 @@ library(tidyverse)
 library(adehabitatLT)
 
 # read in pre-cleaned elephant data
-clean_els <- read_csv("../Elephants/Data/clean_allels.csv", col_types = "ddTdddddddccc")
+elephants <- read_csv("data-raw/elephants.csv")
+usethis::use_data(elephants, internal = T, overwrite = T)
 
-# filter out 2 elephants, of different fix rates, for all of 2010
-traj <- filter(clean_els, id %in% c("AG195", "AG268"), lubridate::year(date) == 2010) %>% adehabitatLT::dl(.)
-
-AG268_raw <- ld(traj[2])
-write_csv(AG268_raw, "data-raw/AG268_raw.csv")
+traj <- elephants %>% dl()
 
 # regularize
 els <- c(
@@ -23,11 +20,6 @@ AG268 <- stmove::kalman(els[[2]])
 write_csv(AG195, "data-raw/AG195.csv")
 write_csv(AG268, "data-raw/AG268.csv")
 
-elephants <- rbind(AG195, AG268)
-write_csv(elephants, "data-raw/elephants.csv")
-
 # export
 usethis::use_data(AG195, overwrite = T)
 usethis::use_data(AG268, overwrite = T)
-usethis::use_data(AG268_raw, overwrite = T)
-usethis::use_data(elephants, overwrite = T)
