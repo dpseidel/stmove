@@ -17,17 +17,21 @@ dist_map <- function(df, proj4, labels = TRUE) {
     ) %>%
     sf::st_as_sf(coords = c("meanX", "meanY"), remove = FALSE, crs = proj4)
 
- p <- ggplot(data = mean_sf) +
+  p <- ggplot(data = mean_sf) +
     geom_sf(aes(color = .data$meanyear, fill = .data$meanyear)) +
-    labs(title = "General Spatial and Temporal Distribution of Individuals",
-    x = "Latitude",  y = "Longitude", color = "Year", fill = "Year")
+    labs(
+      title = "General Spatial and Temporal Distribution of Individuals",
+      x = "Latitude", y = "Longitude", color = "Year", fill = "Year"
+    )
 
- if(labels == TRUE) {
-   print(p + ggrepel::geom_text_repel(mapping = aes(
-     x = .data$meanX, y = .data$meanY,
-     label = .data$id, color = .data$meanyear
-   )))
- } else {print(p)}
+  if (labels == TRUE) {
+    print(p + ggrepel::geom_text_repel(mapping = aes(
+      x = .data$meanX, y = .data$meanY,
+      label = .data$id, color = .data$meanyear
+    )))
+  } else {
+    print(p)
+  }
 
 
   return(mean_sf)
@@ -49,8 +53,10 @@ plot_timeline <- function(df) {
     ),
     linetype = 1, size = 2
     ) +
-    labs(title = "Timeline Plot of Tagged Individuals",
-         x = "Date",  y = "ID", color = "ID") +
+    labs(
+      title = "Timeline Plot of Tagged Individuals",
+      x = "Date", y = "ID", color = "ID"
+    ) +
     theme_classic() +
     theme(legend.position = "none", plot.title = element_text(hjust = .5))
 }

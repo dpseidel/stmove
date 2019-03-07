@@ -16,8 +16,8 @@ construct <- function(df, type = c("klocoh", "akde"), proj4) {
 
   if ("klocoh" %in% type && !requireNamespace("tlocoh", quietly = TRUE)) {
     stop("Package tlocoh must be installed to run klocoh.\n",
-         "Please see `http://tlocoh.r-forge.r-project.org/#installation` for installation instructions.",
-         call. = FALSE
+      "Please see `http://tlocoh.r-forge.r-project.org/#installation` for installation instructions.",
+      call. = FALSE
     )
   }
 
@@ -43,8 +43,10 @@ construct <- function(df, type = c("klocoh", "akde"), proj4) {
 
     # lxy.thin.bursts.... unnecessary?
     lxy <- tlocoh::lxy.nn.add(lxy, s = 0, k = k, status = F)
-    lhs <- tlocoh::lxy.lhs(lxy, k = k, s = 0, iso.levels = c(0.25, 0.50, 0.95),
-                           iso.add = T, status = F)
+    lhs <- tlocoh::lxy.lhs(lxy,
+      k = k, s = 0, iso.levels = c(0.25, 0.50, 0.95),
+      iso.add = T, status = F
+    )
     plot(lhs, iso = T)
   }
 

@@ -12,3 +12,4 @@ df_check(df)
 \description{
 An (internal) helper function to check dataframes and provide helpful errors
 }
+\keyword{internal}

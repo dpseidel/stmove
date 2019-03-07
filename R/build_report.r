@@ -18,6 +18,8 @@
 #' }
 build_report <- function(df, path, proj4, stats = c("rolling", "diurnal"),
                          construct = c("klocoh"), seas = NULL, wavelet = NULL) {
+  df_check(df)
+
   params <- list(
     df = df, stats = stats, construct = construct,
     proj4 = proj4, seas = seas, wavelet = wavelet

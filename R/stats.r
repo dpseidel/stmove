@@ -5,6 +5,8 @@
 #' @export
 #'
 rolling_stats <- function(df) {
+  df_check(df)
+
   traj <- dl(df)[[1]][-nrow(df), ]
   dt <- traj$dt[1] # assuming completely regular trajectory, this is safe.
   n_fix_hr <- 60 * 60 / dt
@@ -20,18 +22,20 @@ rolling_stats <- function(df) {
     win <- 3
   }
 
+  n_roll <- round(n_fix_hr * win)
+
   dplyr::mutate(traj,
-    mean_dist = RcppRoll::roll_meanr(x = dist, n = n_fix_hr * win),
-    sd_dist = RcppRoll::roll_sdr(x = dist, n = n_fix_hr * win),
+    mean_dist = RcppRoll::roll_meanr(x = dist, n = n_roll),
+    sd_dist = RcppRoll::roll_sdr(x = dist, n = n_roll),
 
     # the source on these runCor functions are written in Fortran
     # provide significant speed improvements but don't handle NAs well.
-    acf_dist = c(TTR::runCor(x = dist[-length(dist)], y = dist[-1], n = n_fix_hr * win), NA),
-    mean_ang = RcppRoll::roll_meanr(.data$rel.angle, n = n_fix_hr * win),
-    sd_ang = RcppRoll::roll_sdr(.data$rel.angle, n = n_fix_hr * win),
+    acf_dist = c(TTR::runCor(x = dist[-length(dist)], y = dist[-1], n = n_roll), NA),
+    mean_ang = RcppRoll::roll_meanr(.data$rel.angle, n = n_roll),
+    sd_ang = RcppRoll::roll_sdr(.data$rel.angle, n = n_roll),
 
-    acf_ang = c(TTR::runCor(x = .data$rel.angle[-length(.data$rel.angle)], y = .data$rel.angle[-1], n = n_fix_hr * win), NA),
-    ccf = TTR::runCor(x = dist, y = .data$rel.angle, n = n_fix_hr * win)
+    acf_ang = c(TTR::runCor(x = .data$rel.angle[-length(.data$rel.angle)], y = .data$rel.angle[-1], n = n_roll), NA),
+    ccf = TTR::runCor(x = dist, y = .data$rel.angle, n = n_roll)
   )
 }
 
@@ -46,6 +50,7 @@ rolling_stats <- function(df) {
 #' @importFrom lubridate floor_date
 interval_stats <- function(df, type = "diurnal", seas = NULL) {
   # Consider adapting this to do multiple ids at once or for full ltraj compatability
+  df_check(df)
 
   traj <- dl(df)[[1]]
 
@@ -76,9 +81,9 @@ interval_stats <- function(df, type = "diurnal", seas = NULL) {
 
     traj$phase <- ifelse(traj$phase %in% c("Full", "Waning"), "Full-Waning", "New-Waxing")
     traj$interval_start <- cut(floor_date(traj$date, "1 day"),
-                               breaks = unique(interval_starts), # needs testing
-                               right = F, include.lowest = T
-    )
+      breaks = unique(interval_starts), # needs testing
+      right = F, include.lowest = T
+    ) # not behaving when the last break is small.
 
     quocol <- sym("phase")
   }
