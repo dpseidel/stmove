@@ -12,9 +12,10 @@ interval_stats(df, type = "diurnal", seas = NULL)
 \item{type}{a character string indicating the intervals to calculate, one of
 "diurnal", "lunar", or "seasonal".}
 
-\item{seas}{a named numeric vector including the start date of each season
-indicated by the Julian day (see \code{lubridate::yday} for easy conversion).
-Required if \code{type == "seasonal"}}
+\item{seas}{a numeric vector including the start date of each season
+indicated by the Julian day (see \link[lubridate]{yday} for easy conversion).
+Required if \code{type == "seasonal"}. \code{build_report()} can optionally take a named vector
+including names of the seasons beginning on each julian day.}
 }
 \description{
 Interval Summary Statistics

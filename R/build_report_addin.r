@@ -95,7 +95,6 @@ report_addin <- function() {
       }
     })
 
-
     shiny::observeEvent(input$done, { # a couple things to think about -- how to specify data, output file?
       shiny::stopApp(build_report(
         df = reactive_data(),
@@ -103,7 +102,7 @@ report_addin <- function() {
         stats = input$stats,
         construct = input$construct,
         proj4 = input$proj4,
-        seas = input$seas,
+        seas = as.numeric(unlist(strsplit(input$seas,","))),
         wavelet = input$wavelet
       ))
     })

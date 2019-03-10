@@ -44,9 +44,10 @@ rolling_stats <- function(df) {
 #' @param df a dataframe containing columns "x", "y", and "date"
 #' @param type a character string indicating the intervals to calculate, one of
 #' "diurnal", "lunar", or "seasonal".
-#' @param seas a named numeric vector including the start date of each season
-#' indicated by the Julian day (see `lubridate::yday` for easy conversion).
-#' Required if `type == "seasonal"`
+#' @param seas a numeric vector including the start date of each season
+#' indicated by the Julian day (see \link[lubridate]{yday} for easy conversion).
+#' Required if `type == "seasonal"`. `build_report()` can optionally take a named vector
+#' including names of the seasons beginning on each julian day.
 #' @importFrom lubridate floor_date
 interval_stats <- function(df, type = "diurnal", seas = NULL) {
   # Consider adapting this to do multiple ids at once or for full ltraj compatability
@@ -103,6 +104,10 @@ interval_stats <- function(df, type = "diurnal", seas = NULL) {
     )
 
     traj$seas <- NA
+
+    if (is.null(names(seas))) {
+      names(seas) <- paste0("seas", 1:length(seas))
+    }
 
     for (i in 1:length(seas)) {
       traj$seas[yday(traj$date) == seas[i]] <- names(seas)[i]
