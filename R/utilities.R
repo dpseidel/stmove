@@ -22,7 +22,6 @@ regularize <- function(df, dt, units = "min", tol = dt / 10, ref = NULL) {
   adehabitatLT::ld(traj) %>% dplyr::select(names(df))
 }
 
-
 #' Build telemetry objects using projected data
 #'
 #' A helper function to create telemetry objects required by `ctmm`
@@ -69,12 +68,31 @@ kalman <- function(df, warn = TRUE) {
 
   df$real <- !is.na(df$x)
 
-  # Replace NA values in longitude with Kalman Smoothed estimates
-  df$x <- imputeTS::na.kalman(df$x, model = "StructTS", smooth = TRUE)
-
-  # Replace NA values in latitude with Kalman Smoothed estimates
-  df$y <- imputeTS::na.kalman(df$y, model = "StructTS", smooth = TRUE)
-
+  temp_df <- df
+  tryCatch ({
+    # Replace NA values in longitude with Kalman Smoothed estimates
+    temp_df$x <- imputeTS::na.kalman(df$x, model = "StructTS", smooth = TRUE)
+    # Replace NA values in latitude with Kalman Smoothed estimates
+    temp_df$y <- imputeTS::na.kalman(df$y, model = "StructTS", smooth = TRUE)
+  }, warning = function(w) {
+    print("Running warning protocol; Kalman smoothing failed to converge \n
+          using structural time series modeling. Reverting to auto ARIMA approach")
+    # Replace NA values in longitude using auto.arima approach
+    temp_df$x <- imputeTS::na.kalman(df$x, model = "auto.arima", smooth = TRUE)
+    # Replace NA values in latitude using auto.arima approach
+    temp_df$y <- imputeTS::na.kalman(df$y, model = "auto.arima", smooth = TRUE)
+  }, error = function(e) {
+    print("Running error protocol; Kalman smoothing failed to converge \n
+          using structural time series modeling. Reverting to auto ARIMA approach")
+    # Replace NA values in longitude using auto.arima approach
+    temp_df$x <- imputeTS::na.kalman(df$x, model = "auto.arima", smooth = TRUE)
+    # Replace NA values in latitude using auto.arima approach
+    temp_df$y <- imputeTS::na.kalman(df$y, model = "auto.arima", smooth = TRUE)
+  }, finally = {
+    df$x <- temp_df$x
+    df_y <- temp_df$y
+  })
+  
   if (warn == TRUE) {
     if (sum(!df$real) / nrow(df) > .05) {
       warning(paste(
