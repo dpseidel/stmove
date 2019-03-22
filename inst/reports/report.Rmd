@@ -3,6 +3,7 @@ title: "Movement Report for `r params$df$id[1]`"
 subtitle: "created with pkg stmove" 
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: pdf_document
+geometry: margin=2cm
 params:
   df: NA
   stats: NA
@@ -33,20 +34,23 @@ seasonal <- ("seasonal" %in% params$stats)
 wavelet <- (!is.null(params$wavelet))
 ```
 
-# Visualize my trajectory
+# Visualize the trajectory
 
 ```{r}
 plot(params$df$x, params$df$y, type = "p", xlab = "Easting",  ylab = "Northing")
 ```
 
-# Distributions:
+# Step Length & Turning Angle Distributions:
 
 ```{r, fig.height = 4}
 ss <- ss_dist(x = params$df)
+```
+
+```{r, fig.height = 4}
 ta <- ta_dist(x = params$df)
 ```
 
-# Basic Statistical Summary
+`r if any(c(rolling, diurnal, lunar, seasonal)) '# Basic Statistical Summary'`
 
 `r if (rolling) '## Fine Scale Sliding Window'`
 
@@ -201,16 +205,15 @@ Also see suggestions from Seidel et al. 2019, Appendix C of Seidel et al. 2018,
 or tutorials from the 2018 Movement Ecology in R workshop hosted [here](https://www.danaseidel.com/MovEco-R-Workshop/).
 
 - Habitat Selection Analysis
-    - the `sf` package offers ...
-    - the `raster` package offers ...
+    - the `sf` package offers tools for ready manipulation of spatial vector data. 
+    - the `raster` and `velox` packages offer tools for raster data manipulation. 
     - the `lme4` package is useful for fitting generalized linear models with fixed or random effects
-- Hidden Markov Models
+- Hidden Markov Models can be fit or Behavioral Change Point Analysis done with tools from:
     - `momentuHMM`
     - `moveHmm`
-- Dynamic Interaction between individuals?
+    - `bcpa`
+- Dynamic Interaction between individuals may be explored use
     - `wildlifeDI`
-
-# Constructing Home Ranges
-=======
+    
 Also consider the numerous analyses made available by the extentive "adehabitat" packages:
 `adehabitatLT`, `adehabitatHR`, `adehabitatMA`, `adehabitatHS` and their indepth vignettes. 
