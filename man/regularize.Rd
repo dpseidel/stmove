@@ -4,7 +4,7 @@
 \alias{regularize}
 \title{Regularize a near-regular trajectory}
 \usage{
-regularize(df, dt, units = "min", tol = dt/10, ref = NULL)
+regularize(df, dt, units = "min", ref = NULL)
 }
 \arguments{
 \item{df}{a dataframe containing columns x, y, date representing relocations in space and time.}
@@ -12,8 +12,6 @@ regularize(df, dt, units = "min", tol = dt/10, ref = NULL)
 \item{dt}{the expected time lag between relocations}
 
 \item{units}{a character string indicating the time units for dt and tol}
-
-\item{tol}{the tolerance, i.e. the imprecision in the timing of data collection}
 
 \item{ref}{a datetime from which to start the fixes. Default \code{ref=NULL} will
 calculate ref value by rounding the first timestamp in \code{df}}

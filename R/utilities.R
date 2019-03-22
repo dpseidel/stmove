@@ -3,13 +3,12 @@
 #' @param df a dataframe containing columns x, y, date representing relocations in space and time.
 #' @param dt the expected time lag between relocations
 #' @param units a character string indicating the time units for dt and tol
-#' @param tol the tolerance, i.e. the imprecision in the timing of data collection
 #' @param ref a datetime from which to start the fixes. Default `ref=NULL` will
 #' calculate ref value by rounding the first timestamp in `df`
 #'
 #' @export
 #' @seealso \link[adehabitatLT]{setNA} \link[adehabitatLT]{sett0} \link[adehabitatLT]{subsample}
-regularize <- function(df, dt, units = "min", tol = dt / 10, ref = NULL) {
+regularize <- function(df, dt, units = "min", ref = NULL) {
   traj <- adehabitatLT::dl(df)
 
   if (is.null(ref)) {
@@ -21,7 +20,6 @@ regularize <- function(df, dt, units = "min", tol = dt / 10, ref = NULL) {
 
   adehabitatLT::ld(traj) %>% dplyr::select(names(df))
 }
-
 
 #' Build telemetry objects using projected data
 #'
@@ -101,7 +99,7 @@ df_check <- function(df) {
     )
   }
 
-  if (diff(range(diff(df$date))) != 0 || any(is.na(df))) {
+  if (diff(range(diff(df$date))) != 0 || any(is.na(df$x))) {
     stop("stmove expects dataframes with regular intervals and no missing values, consider
           using `regularize()` and `kalman()` to regularize your data.",
          call. = FALSE
