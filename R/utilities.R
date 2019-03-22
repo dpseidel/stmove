@@ -75,15 +75,13 @@ kalman <- function(df, warn = TRUE) {
     # Replace NA values in latitude with Kalman Smoothed estimates
     temp_df$y <- imputeTS::na.kalman(df$y, model = "StructTS", smooth = TRUE)
   }, warning = function(w) {
-    print("Running warning protocol; Kalman smoothing failed to converge \n
-          using structural time series modeling. Reverting to auto ARIMA approach")
+    print("Running warning protocol; Kalman smoothing failed to converge using structural time series modeling. Reverting to auto ARIMA approach")
     # Replace NA values in longitude using auto.arima approach
     temp_df$x <- imputeTS::na.kalman(df$x, model = "auto.arima", smooth = TRUE)
     # Replace NA values in latitude using auto.arima approach
     temp_df$y <- imputeTS::na.kalman(df$y, model = "auto.arima", smooth = TRUE)
   }, error = function(e) {
-    print("Running error protocol; Kalman smoothing failed to converge \n
-          using structural time series modeling. Reverting to auto ARIMA approach")
+    print("Running error protocol; Kalman smoothing failed to converge using structural time series modeling. Reverting to auto ARIMA approach")
     # Replace NA values in longitude using auto.arima approach
     temp_df$x <- imputeTS::na.kalman(df$x, model = "auto.arima", smooth = TRUE)
     # Replace NA values in latitude using auto.arima approach
