@@ -8,3 +8,4 @@
 ^report\.Rmd$
 ^report\.pdf$
 ^pop\.Rmd$
+^\.covignore\$
