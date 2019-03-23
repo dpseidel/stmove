@@ -49,7 +49,7 @@ report_addin <- function() {
           condition = "input.stats.includes('seasonal')",
           shiny::textInput(
             inputId = "seas",
-            label = "Season start dates (Julian dates)"
+            label = "Season start dates ('%Y-%m-%d')"
           )
         ), shiny::checkboxGroupInput(
           "construct",
@@ -102,7 +102,7 @@ report_addin <- function() {
         stats = input$stats,
         construct = input$construct,
         proj4 = input$proj4,
-        seas = as.numeric(unlist(strsplit(input$seas,","))),
+        seas = as.character(unlist(strsplit(input$seas,","))),
         wavelet = input$wavelet
       ))
     })

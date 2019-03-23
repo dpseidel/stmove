@@ -21,10 +21,8 @@ coordinate reference system defining the relocations}
 \item{construct}{a character vector indicating which spacetime construction methods to use.
 options include "klocoh" and "akde"}
 
-\item{seas}{a numeric vector including the start date of each season
-indicated by the Julian day (see \link[lubridate]{yday} for easy conversion).
-Required if \code{type == "seasonal"}. \code{build_report()} can optionally take a named vector
-including names of the seasons beginning on each julian day.}
+\item{seas}{a character vector including the start date of each season interval in the format
+\%Y-\%m-\%d, e.g. "2015-01-01".  Required if \code{type == "seasonal"}.}
 
 \item{wavelet}{a character vector indicating which variables to calculate wavelet analysis on,
 options in "dist", "rel.angle", "acf_dist", "acf_ang", and "ccf".}

@@ -12,11 +12,24 @@ interval_stats(df, type = "diurnal", seas = NULL)
 \item{type}{a character string indicating the intervals to calculate, one of
 "diurnal", "lunar", or "seasonal".}
 
-\item{seas}{a numeric vector including the start date of each season
-indicated by the Julian day (see \link[lubridate]{yday} for easy conversion).
-Required if \code{type == "seasonal"}. \code{build_report()} can optionally take a named vector
-including names of the seasons beginning on each julian day.}
+\item{seas}{a character vector including the start date of each season interval in the format
+\%Y-\%m-\%d, e.g. "2015-01-01".  Required if \code{type == "seasonal"}.}
 }
 \description{
 Interval Summary Statistics
+}
+\details{
+Note: if your trajectory includes dates before the first date in your \code{seas} vector, they
+will automatically be considered a separate season.
+}
+\examples{
+# diurnal is default
+interval_stats(AG195)
+interval_stats(AG195, type = "lunar")
+# for seasonal, include y-m-d formatted `seas` vector
+interval_stats(AG195, type = "seasonal", seas = c("2010-03-01", "2010-06-01", "2010-9-01"))
+
+}
+\seealso{
+\link[lunar]{lunar.phase}
 }

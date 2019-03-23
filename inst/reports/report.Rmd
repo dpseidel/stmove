@@ -50,7 +50,7 @@ ss <- ss_dist(x = params$df)
 ta <- ta_dist(x = params$df)
 ```
 
-`r if any(c(rolling, diurnal, lunar, seasonal)) '# Basic Statistical Summary'`
+`r if (any(c(rolling, diurnal, lunar, seasonal))) '# Basic Statistical Summary'`
 
 `r if (rolling) '## Fine Scale Sliding Window'`
 
@@ -168,9 +168,9 @@ seasonal_stats <<- interval_stats(params$df, type = "seasonal", seas = params$se
 
 seasonal_stats %>% gather("stat", "estimate", -1:-2) %>% 
   ggplot(., aes(x = as.numeric(interval_start), y = estimate, color = stat)) +
-  geom_point() + geom_path() +
-   scale_x_continuous("Season", breaks = 1:nlevels(seasonal_stats$interval_start), 
-                          labels = seasonal_stats$seas) +
+  geom_step() +
+  #geom_point() + geom_path() +
+   scale_x_continuous("Season", breaks = 1:nlevels(seasonal_stats$interval_start)) +
   ggtitle("Seasonal Interval Statistics")
 
 
