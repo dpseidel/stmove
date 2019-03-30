@@ -25,10 +25,11 @@ Suggests:
     testthat,
     vdiffr (>= 0.3.0),
     imputeTS,
-    covr, 
-    rstudioapi, 
-    miniUI, 
-    shiny
+    covr,
+    rstudioapi,
+    miniUI,
+    shiny,
+    knitr
 Imports:
     adehabitatLT,
     ggplot2,
@@ -47,3 +48,4 @@ Imports:
     rmarkdown
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
+VignetteBuilder: knitr

@@ -26,9 +26,9 @@ including the results of the following computations.
 
 ### Basic path distributions:
 
-1.  Generate step size time series S={(t,s(t)) | over \[0,T\]} and plot
-    step-size histogram
-2.  Generate turning angle time series A={(t,a(t)) | over \[0,T\]} and
+1.  Generate step size time series \(S={(t,s(t)) | over [0,T]}\) and
+    plot step-size histogram
+2.  Generate turning angle time series \(A={(t,a(t)) | over [0,T]}\) and
     plot turning angle distribution
 
 ### Basic path statistics:
@@ -67,9 +67,6 @@ on such analyses.
 
 ## Installation
 
-stmove is in active development. You can install the current version of
-stmove with:
-
-``` r
-devtools::install_github("dpseidel/stmove")
-```
+stmove is in active development and is not yet available for public
+download. If you would like to be a beta tester, please contact the
+authors.

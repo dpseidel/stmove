@@ -17,3 +17,9 @@ coordinate reference system defining the relocations}
 \description{
 Home Range Construction by Two Methods
 }
+\examples{
+\donttest{
+klocoh <- construct(AG195, type = "klocoh", proj = "+proj=utm +zone=33 +south")
+akde <- construct(AG195, type = "akde", proj = "+proj=utm +zone=33 +south")
+}
+}

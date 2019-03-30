@@ -9,7 +9,7 @@
 #' will warn you to set `n_roll`.
 #' @seealso \link[RcppRoll]{roll_mean} \link[RcppRoll]{roll_sdr} \link[TTR]{runCor}
 #' @examples
-#' rolling_stats(AG195)
+#' roll <- rolling_stats(AG195)
 #' @export
 rolling_stats <- function(df, n_roll = NULL) {
   df_check(df)

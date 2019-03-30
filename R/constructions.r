@@ -4,7 +4,11 @@
 #' @param type a character string indicating the type/s of constructions to build, "klocoh" or "akde"
 #' @param proj4 a character string indicating the proj.4 definition of the
 #' coordinate reference system defining the relocations
-#'
+#' @examples
+#' \donttest{
+#' klocoh <- construct(AG195, type = "klocoh", proj = "+proj=utm +zone=33 +south")
+#' akde <- construct(AG195, type = "akde", proj = "+proj=utm +zone=33 +south")
+#' }
 #' @export
 construct <- function(df, type = c("klocoh", "akde"), proj4) {
   # we may want to consider allowing user specification of some tlocoh arguments.

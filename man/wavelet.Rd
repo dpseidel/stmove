@@ -15,7 +15,8 @@ options in "dist", "rel.angle", "acf_dist", "acf_ang", and "ccf". By default, an
 
 \item{plot}{a logical indicating whether or not to return a histogram of the distribution}
 
-\item{...}{Arguments passed to \link[dplR]{wavelet.plot}. Only relevant when \code{plot = T}.}
+\item{...}{Arguments passed to \link[dplR]{wavelet.plot}. Only relevant when \code{plot = T}. Useful
+for changing plot defaults e.g. axis labels.}
 }
 \description{
 Build morelet wavelet diagrams for step size, turning angle, auto and cross correlation
@@ -23,8 +24,7 @@ coefficients through time.
 }
 \examples{
 \donttest{
-wavelet(AG195)
-wavelet(AG195, c("dist", "angle"))
+dist_wave <- wavelet(AG195, stats = "dist", UseRaster = T)
 }
 
 }

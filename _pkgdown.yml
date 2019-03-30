@@ -1,0 +1,37 @@
+authors:
+  Dana Seidel:
+    href: <https://www.danaseidel.com>
+
+reference:
+- title: "Report Building"
+  desc: >
+    Main function for building custom movement reports
+  contents:
+  - build_report
+  - report_addin
+
+- title: "Standalone analyses"
+  desc: >
+    Functions for standalone movement analyses
+  contents:
+  - ss_dist
+  - interval_stats
+  - rolling_stats
+  - wavelet
+  - construct
+  - plot_timeline
+  - dist_map
+
+- title: "Utility Functions"
+  desc: >
+    Functions for creating or formatting clean regular trajectories.
+  contents:
+  - create_telemetry
+  - regularize
+  - kalman
+
+- title: "Data"
+  desc: >
+    Two data files useful for examples
+  contents:
+  - starts_with("AG")

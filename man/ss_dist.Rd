@@ -24,8 +24,8 @@ turning angles for a given trajectory and plot associated histograms.
 }
 \examples{
 \donttest{
-ss_dist(AG195)
-ta_dist(AG195)
+ss <- ss_dist(AG195)
+ta <- ta_dist(AG195)
 }
 
 }

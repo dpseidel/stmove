@@ -9,3 +9,4 @@
 ^report\.pdf$
 ^pop\.Rmd$
 ^\.covrignore$
+^\_pkgdown\.yml$

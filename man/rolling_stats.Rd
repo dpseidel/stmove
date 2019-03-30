@@ -23,7 +23,7 @@ some detailed discussion of how auto and cross correlation are calculated and
 na handling
 }
 \examples{
-rolling_stats(AG195)
+roll <- rolling_stats(AG195)
 }
 \seealso{
 \link[RcppRoll]{roll_mean} \link[RcppRoll]{roll_sdr} \link[TTR]{runCor}
