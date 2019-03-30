@@ -16,7 +16,7 @@ params:
 ```{r setup, include = F}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  echo = FALSE, 
+  echo = FALSE,
   message = FALSE,
   warning = FALSE
 )
@@ -37,7 +37,7 @@ wavelet <- (!is.null(params$wavelet))
 # Visualize the trajectory
 
 ```{r}
-plot(params$df$x, params$df$y, type = "p", xlab = "Easting",  ylab = "Northing")
+plot(params$df$x, params$df$y, type = "p", xlab = "Easting", ylab = "Northing")
 ```
 
 # Step Length & Turning Angle Distributions:
@@ -88,9 +88,8 @@ plots <- purrr::map(
     y <- sym(x)
     p <- ggplot(
       diurnal_stats,
-      aes(interval_start, y = !!y, color = TOD
-      )
-    ) + geom_point(na.rm = T, size = .3) + 
+      aes(interval_start, y = !!y, color = TOD)
+    ) + geom_point(na.rm = T, size = .3) +
       geom_smooth(na.rm = T) +
       xlab(NULL) +
       theme(axis.text.x = element_text(angle = 25, vjust = .5))
@@ -124,11 +123,10 @@ plots <- purrr::map(
     y <- sym(x)
     p <- ggplot(
       lunar_stats,
-      aes(x = as.numeric(interval_start), y = !!y, color = phase
-      )
-    ) + 
-      geom_step(aes(group=1)) +
-      #scale_x_continuous(breaks = 1:nlevels(lunar_stats$interval_start), 
+      aes(x = as.numeric(interval_start), y = !!y, color = phase)
+    ) +
+      geom_step(aes(group = 1)) +
+      # scale_x_continuous(breaks = 1:nlevels(lunar_stats$interval_start),
       #                   labels = levels(lunar_stats$interval_start)) +
       xlab(NULL) +
       theme(axis.text.x = element_text(angle = 25, vjust = .5))
@@ -148,7 +146,6 @@ plots <- purrr::map(
   plots[[3]] + plots[[4]] + plots[[5]]
 } + plot_layout(nrow = 2) +
   plot_annotation(title = "Lunar Interval Statistics")
-
 ```
 
 `r if (seasonal) '## Seasonal Cycle'`
@@ -156,23 +153,22 @@ plots <- purrr::map(
 ```{r eval = seasonal}
 seasonal_stats <<- interval_stats(params$df, type = "seasonal", seas = params$seas)
 
-
 # p1 <-  ggplot(seasonal_stats,
-#       aes(x = as.numeric(interval_start), color = seas)) + 
+#       aes(x = as.numeric(interval_start), color = seas)) +
 #       geom_pointrange(aes( y = mean_dist, ymin = mean_dist - sd_dist, ymax = mean_dist + sd_dist)) +
 # #      geom_pointrange(aes( y = mean_ang, ymin = mean_ang - sd_ang, ymax = mean_ang + sd_ang)) +
-#       scale_x_continuous(breaks = 1:nlevels(seasonal_stats$interval_start), 
+#       scale_x_continuous(breaks = 1:nlevels(seasonal_stats$interval_start),
 #                          labels = seasonal_stats$seas) +
 #       xlab(NULL) +
 #       theme(axis.text.x = element_text(angle = 25, vjust = .5), legend.position = "None")
 
-seasonal_stats %>% gather("stat", "estimate", -1:-2) %>% 
+seasonal_stats %>%
+  tidyr::gather("stat", "estimate", -1:-2) %>%
   ggplot(., aes(x = as.numeric(interval_start), y = estimate, color = stat)) +
+  geom_point() + # to make sure single seasons displayed.
   geom_step() +
-  #geom_point() + geom_path() +
-   scale_x_continuous("Season", breaks = 1:nlevels(seasonal_stats$interval_start)) +
+  scale_x_continuous("Season", breaks = 1:nlevels(seasonal_stats$interval_start)) +
   ggtitle("Seasonal Interval Statistics")
-
 
 ```
 
