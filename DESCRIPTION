@@ -8,7 +8,8 @@ Description: A system for building reports containing a minimal set of spatial,
     trajectory. 
 Authors@R: c(
     person("Dana", "Seidel", ,"dpseidel@berkeley.edu", c("aut", "cre")),
-    person("Eric", "Dougherty", ,"dougherty.eric@berkeley.edu", c("aut"))
+    person("Eric", "Dougherty", ,"dougherty.eric@berkeley.edu", c("aut")),
+    person("Wayne", "Getz", ,"wgetz@berkeley.edu", c("aut"))
     )
 License: GPL-3
 URL: https://github.com/dpseidel/stmove
@@ -19,7 +20,7 @@ Depends:
  R (>= 2.10)
 Remotes: 
   thomasp85/patchwork,
-  url::http://download.r-forge.r-project.org/src/contrib/tlocoh_1.40.05.tar.gz
+  url::http://download.r-forge.r-project.org/src/contrib/tlocoh_1.40.07.tar.gz
 Suggests: 
     tlocoh,
     testthat,
