@@ -21,42 +21,17 @@ This tutorial will cover these utility functions, taking a raw trajectory from i
 
 ```{r, warning=FALSE, message=FALSE}
 library(stmove)
-library(dplyr)
-library(lubridate)
 library(sf)
-library(adehabitatLT)
+library(dplyr)
 library(ggplot2)
-#devtools::install_github("thomasp85/patchwork")
-library(patchwork)
 ```
 
 ## Example Path
 
-For this tutorial, we will use an elephant trajectory from Southern Africa. The individual (AG195) was tracked between July 2009 and January 2012, resulting in nearly 130,000 relocation points. 
+For this tutorial, we will use an elephant trajectory from Southern Africa. The individual (AG195) was tracked between July 2009 and January 2012, resulting in nearly 130,000 relocation points. For purpose of demonstration, we will focus on the year-long period between January 1, 2010 and December 31, 2010. The original data collection procedure involved alternative fix intervals of 1 minute and 19 minutes. This means that every other point will be separated by approximately 20 minutes. We will eliminate the intevening short fix intervals for the high-level analyses here by making use of the `regularize` function. For convenience, the stmove package bundles the raw 2010 trajectory for AG195 as `AG195_raw`.
 
 ```{r}
-AG195_raw <- read.csv('../data-raw/AG195_raw.csv')
 head(AG195_raw)
-```
-
-For our purposes here, we will focus on the year-long period between January 1, 2010 and December 31, 2010. The original data collection procedure involved alternative fix intervals of 1 minute and 19 minutes. This means that every other point will be separated by approximately 20 minutes. We will eliminate the intevening short fix intervals for the high-level analyses here by making use of the `regularize` function.
-
-```{r}
-period_of_interest <- lubridate::interval(ymd("2010-01-01"), ymd("2010-12-31")) 
-
-AG195_2010 <- AG195_raw %>%
-    dplyr::mutate(datetime = as.POSIXct(strptime(as.character(datetime), 
-                                                 tz='GMT', format='%m/%d/%y %H:%M'))) %>%
-    dplyr::filter(datetime %within% period_of_interest)
-```
-
-Here, we have mutated the datetime column (using `mutate`) to strip the datetime character strings and transforms the values into recognizable POSIX datetime stamps. From there, we `filter` the resulting column using an interval object created using the `lubridate` package. This subset of the data contains 51832 rows and 16 columns.
-
-Those first five rows of the data above illustrated the fact that there are quite a few data columns that may be useful for in-depth analyses, but are somewhat extraneous for our purposes here. The key elements that we will want to maintain during pre-processing are the datetime stamp, the x and y coordinates, and a unique identifier for any population-level analyses we want to perform later.
-
-```{r}
-AG195_2010 <- AG195_2010 %>%
-    dplyr::select(longitude, latitude, datetime, id)
 ```
 
 The spatial position of the animal in this case has been collected in the form of latlong coordinates, but it will be much more useful in a projection like UTM where the units are more easily interpretable. Since we know that this data was collected in UTM Zone 33S, we can easily change its projection during preprocessing.
@@ -64,9 +39,9 @@ The spatial position of the animal in this case has been collected in the form o
 The easiest way to perform such reprojections is with the `sf` package, which works well with the tidyverse tools, like those used above for manipulating the data frame. We'll want to use the `st_as_sf` function, passing the first two columns as our `coords` argument and 4326 (the EPSG value for the latlong projection in WGS84) as the `crs` argument. 
 
 ```{r}
-AG195_sf <- AG195_2010 %>%
-    st_as_sf(coords=1:2, crs="+init=epsg:4326") %>%
-    st_transform(crs = "+init=epsg:32733")
+AG195_sf <- AG195_raw %>%
+  st_as_sf(coords = 1:2, crs = 4236) %>%
+  st_transform(crs = 32733)
 ```
 
 If we have a general idea of what the track should look like in space, we can plot the result of that function, which created a new geometry column, in order to verify that the points are correctly projected as latlong coordinates.
@@ -89,12 +64,14 @@ One way to go about regularizing this path is the `regularize` utility function 
 
 ```{r}
 AG195_reg <- AG195_sf %>%
-    mutate(x = st_coordinates(AG195_sf)[,1],
-           y = st_coordinates(AG195_sf)[,2]) %>%
-    mutate(date = datetime) %>%
-    dplyr::select(x, y, date, id)
+  mutate(
+    x = st_coordinates(AG195_sf)[, 1],
+    y = st_coordinates(AG195_sf)[, 2]
+  ) %>%
+  mutate(date = datetime) %>%
+  select(x, y, date, id)
 st_geometry(AG195_reg) <- NULL
-AG195_reg <- stmove::regularize(AG195_reg, dt=20, units="min")
+AG195_reg <- stmove::regularize(AG195_reg, dt = 20, units = "min")
 ```
 
 The results is a much more informative, temporally-regularized path. In addition to the coordinates, timestamps, and id columns we fed into the function, we have several additional columns that were created when the trajectory was converted to an ltraj object in the `regularize` function. One last step we'll need to undertake is to determine if that regularization process (or the data collection process itself) resulted in any gaps in the data. The regularization function will fill in NA values for the x and y coordinates at timestamps that we expect to have a reading, but where none is available. Using a table, we can ascertain the frequency of such gaps in our path:
@@ -116,7 +93,7 @@ We can take a look at our final data frame (which should look a lot like it used
 
 ```{r}
 ggplot() +
-  geom_point(aes(x=x, y=y), data=AG195_final)
+  geom_point(aes(x = x, y = y), data = AG195_final)
 ```
 
 These steps have provided a suitable path for running the `build_report` function offered by `stmove`. The result of this is a PDF file with several interesting broad-scale analyses of the path in question. We simply designate the data frame on which the analyses will be conducted, the name or filepath of the output file, and the projection (in our case "+init=epsg:32733"), and the report will be created with rolling and diurnal statistics, a klocoh home range, and a wavelet diagram. Each of these provides potentially interesting insights that we will discuss below.
@@ -124,12 +101,13 @@ These steps have provided a suitable path for running the `build_report` functio
 The build process might take a little while, and we would expect that time to scale with the length of the trajectory, but even with the intensive wavelet and home range calculations, the report is done within a matter of minutes! Here, we have set the `wavelet` argument to TRUE, but the default is NULL, so if you want to see that, you'll need to add that argument on top of the required `df`, `path`, and `proj4` arguments. The default arguments for `stats` are both "rolling"" and "diurnal"", but we will add "lunar" to the set, but we won't add "seasonal" because we would also need to input a vector of the start dates of each season. For our purposes here, the other statistics will be sufficient. The default argument for `construct` is "klocoh" (for the k local convex hull method), which will also be perfect for our analyses here. One could alternatively (or additionally) select "akde" for the adaptive kernel density estimation approach to constructing the home range.
 
 ```{r, eval=FALSE}
-stmove::build_report(AG195_final, 
-                     path = '~/Desktop/', 
-                     proj4 = "+init=epsg:32733",
-                     stats = c("rolling", "diurnal", "lunar"),
-                     construct = c("klocoh"),
-                     wavelet = "dist")
+stmove::build_report(AG195_final,
+  path = "~/Desktop/",
+  proj4 = "+init=epsg:32733",
+  stats = c("rolling", "diurnal", "lunar"),
+  construct = c("klocoh"),
+  wavelet = "dist"
+)
 ```
 
  

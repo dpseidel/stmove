@@ -16,6 +16,23 @@
 #' }
 "AG195"
 
+#' AG195_raw: raw elephant trajectory
+#'
+#' A dataframe containing the raw irregular relocation points for
+#'  African elephant (\emph{Loxodonta africana}) AG195. All points are from
+#'  2010 and were collected by Getz et al. Coordinates reflect the WGS84 geographic
+#'  coordinate system. The fix rate for this individual alternates
+#'  between every 1 and 19 minutes.
+#'
+#' @format A data frame with 51964 rows and 4 variables:
+#' \describe{
+#'   \item{longitude}{x coordinate}
+#'   \item{latitude}{y coordinate}
+#'   \item{datetime}{timestamp of relocation}
+#'   \item{id}{animal id}
+#' }
+"AG195_raw"
+
 #' AG268: elephant trajectory
 #'
 #' A dataframe containing the clean regularized relocation points for

@@ -23,3 +23,8 @@ write_csv(AG268, "data-raw/AG268.csv")
 # export
 usethis::use_data(AG195, overwrite = T)
 usethis::use_data(AG268, overwrite = T)
+
+# read in raw AG195 and filter:
+
+AG195_raw <- read_csv("data-raw/AG195_raw.csv")
+usethis::use_data(AG195_raw, overwrite = T)

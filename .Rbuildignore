@@ -11,3 +11,4 @@
 ^\.covrignore$
 ^\_pkgdown\.yml$
 ^docs$
+vignettes/Figures.Rmd

@@ -38,6 +38,7 @@ Imports:
     ctmm,
     dplyr,
     dplR,
+    forcats,
     lubridate,
     move,
     RcppRoll,

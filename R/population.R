@@ -43,11 +43,13 @@ dist_map <- function(df, proj4, labels = TRUE) {
 #' @param df a dataframe containing columns "x", "y", "date", and "id"
 #' @export
 #' @importFrom ggplot2 geom_segment theme_classic theme element_text
+#' @importFrom dplyr mutate
+#' @importFrom forcats fct_reorder
 plot_timeline <- function(df) {
   df %>%
     group_by(.data$id) %>%
     summarise(start_date = min(.data$date), end_date = max(.data$date)) %>%
-    mutate(id = forcats::fct_reorder(.data$id, .data$start_date, .desc = T)) %>%
+    mutate(id = fct_reorder(.data$id, .data$start_date, .desc = T)) %>%
     ggplot() + geom_segment(aes(
       x = .data$start_date, xend = .data$end_date,
       y = .data$id, yend = .data$id
