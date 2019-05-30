@@ -10,3 +10,4 @@
 ^pop\.Rmd$
 ^\.covrignore$
 ^\_pkgdown\.yml$
+^docs$

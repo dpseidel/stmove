@@ -1,2 +1,4 @@
 *.html
 *.R
+Figures.Rmd
+Figures_cache
