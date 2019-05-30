@@ -6,14 +6,14 @@
 #' @param labels logical, indicating whether or not to label points with IDs, implemented using
 #' \link[ggrepel]{geom_text_repel}
 #' @export
-#' @importFrom ggplot2 ggplot aes geom_sf labs
+#' @importFrom ggplot2 ggplot aes geom_sf labs theme_minimal
 dist_map <- function(df, proj4, labels = TRUE) {
   mean_sf <- df %>%
     dplyr::group_by(.data$id) %>%
     dplyr::summarise(
       meanX = mean(.data$x, na.rm = T),
       meanY = mean(.data$y, na.rm = T),
-      meanyear = factor(round(mean(lubridate::year(.data$date)), 0))
+      meanyear = as.character(round(mean(lubridate::year(.data$date)), 0))
     ) %>%
     sf::st_as_sf(coords = c("meanX", "meanY"), remove = FALSE, crs = proj4)
 
@@ -22,7 +22,7 @@ dist_map <- function(df, proj4, labels = TRUE) {
     labs(
       title = "General Spatial and Temporal Distribution of Individuals",
       x = "Latitude", y = "Longitude", color = "Year", fill = "Year"
-    )
+    ) + theme_minimal()
 
   if (labels == TRUE) {
     print(p + ggrepel::geom_text_repel(mapping = aes(
@@ -47,6 +47,7 @@ plot_timeline <- function(df) {
   df %>%
     group_by(.data$id) %>%
     summarise(start_date = min(.data$date), end_date = max(.data$date)) %>%
+    mutate(id = forcats::fct_reorder(.data$id, .data$start_date, .desc = T)) %>%
     ggplot() + geom_segment(aes(
       x = .data$start_date, xend = .data$end_date,
       y = .data$id, yend = .data$id

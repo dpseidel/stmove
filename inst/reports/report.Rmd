@@ -15,6 +15,7 @@ params:
 
 ```{r setup, include = F}
 knitr::opts_chunk$set(
+  root.dir = tempdir(),
   collapse = TRUE,
   echo = FALSE,
   message = FALSE,
@@ -37,7 +38,8 @@ wavelet <- (!is.null(params$wavelet))
 # Visualize the trajectory
 
 ```{r}
-plot(params$df$x, params$df$y, type = "p", xlab = "Easting", ylab = "Northing")
+ggplot(params$df, aes(x, y)) + geom_point() + labs(x = "Easting", y = "Northing") +
+  theme_minimal()
 ```
 
 # Step Length & Turning Angle Distributions:
@@ -58,10 +60,10 @@ ta <- ta_dist(x = params$df)
 roll <<- rolling_stats(params$df)
 
 p1 <- ggplot(roll, aes(date, y = mean_dist)) +
-  geom_point(na.rm = T) + geom_smooth(na.rm = T)
+  geom_path(na.rm = T)
 
 p2 <- ggplot(roll, aes(date, y = mean_ang)) +
-  geom_point(na.rm = T) + geom_smooth(na.rm = T)
+  geom_path(na.rm = T)
 
 
 suppressMessages(p1 + p2 + plot_annotation("Mean Step Size & Turning Angle on a Rolling Interval"))
@@ -153,23 +155,37 @@ plots <- purrr::map(
 ```{r eval = seasonal}
 seasonal_stats <<- interval_stats(params$df, type = "seasonal", seas = params$seas)
 
-# p1 <-  ggplot(seasonal_stats,
-#       aes(x = as.numeric(interval_start), color = seas)) +
-#       geom_pointrange(aes( y = mean_dist, ymin = mean_dist - sd_dist, ymax = mean_dist + sd_dist)) +
-# #      geom_pointrange(aes( y = mean_ang, ymin = mean_ang - sd_ang, ymax = mean_ang + sd_ang)) +
-#       scale_x_continuous(breaks = 1:nlevels(seasonal_stats$interval_start),
-#                          labels = seasonal_stats$seas) +
-#       xlab(NULL) +
-#       theme(axis.text.x = element_text(angle = 25, vjust = .5), legend.position = "None")
+p1 <- seasonal_stats %>%
+  # tidyr::gather("stat", "estimate", -1) %>%
+  ggplot(., aes(x = as.numeric(interval_start), y = mean_dist)) +
+  geom_col() +
+  geom_errorbar(aes(
+    ymin = mean_dist,
+    ymax = mean_dist + sd_dist
+  )) + labs(x = "", y = "Average Step Size (+ 1 SD)")
+p2 <- seasonal_stats %>%
+  ggplot(., aes(x = as.numeric(interval_start), y = mean_ang)) +
+  geom_col() +
+  labs(x = "Season", y = "Mean Turning Angle")
 
-seasonal_stats %>%
-  tidyr::gather("stat", "estimate", -1:-2) %>%
-  ggplot(., aes(x = as.numeric(interval_start), y = estimate, color = stat)) +
-  geom_point() + # to make sure single seasons displayed.
-  geom_step() +
-  scale_x_continuous("Season", breaks = 1:nlevels(seasonal_stats$interval_start)) +
-  ggtitle("Seasonal Interval Statistics")
+p3 <- seasonal_stats %>%
+  select(-mean_dist, -sd_dist, -mean_ang, -sd_ang) %>%
+  tidyr::gather("stat", "estimate", -1) %>%
+  ggplot(., aes(
+    x = as.factor(as.numeric(interval_start)), y = estimate,
+    group = stat, color = stat
+  )) +
+  geom_point() +
+  geom_line() +
+  lims(y = c(-1, 1)) +
+  labs(x = "")
 
+p1 + p2 + p3 +
+  plot_annotation(
+    title = "Interval Statistics Across Seasons",
+    theme = theme(plot.title = element_text(hjust = .5))
+  ) &
+  theme_minimal()
 ```
 
 `r if (wavelet) '# Visualizing Periodicity'`

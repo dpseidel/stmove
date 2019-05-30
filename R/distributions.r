@@ -7,6 +7,7 @@
 #' @param x a dataframe with columns: x, y, date, and id (optional)
 #' @param plot a logical indicating whether or not to return a histogram of the distribution
 #' @return a numeric vector and (optionally) a plot of the turning angle or step length distribution
+#' @importFrom ggplot2 geom_histogram labs theme_minimal
 #' @export
 #' @examples
 #' \donttest{
@@ -25,11 +26,11 @@ ss_dist <- function(x, plot = T) {
   dist <- traj[[1]]$dist
 
   if (plot == T) {
-    hist(
-      x = dist,
-      xlab = "Step Length",
-      main = paste0("Step Length Distribution \n dt = ", dt, " secs")
-    )
+    ggplot() + geom_histogram(aes(x = dist)) +
+      labs(
+      x = "Step Length",
+      title = paste0("Step Length Distribution \n dt = ", dt, " secs")
+    ) + theme_minimal()
   }
 
   return(dist)
@@ -48,11 +49,11 @@ ta_dist <- function(x, plot = T) {
 
 
   if (plot == T) {
-    hist(
-      x = ang,
-      xlab = "Turning Angle",
-      main = paste0("(Relative) Turning Angle Distribution \n dt = ", dt, " secs")
-    )
+    ggplot() + geom_histogram(aes(
+      x = ang)) + labs(
+      x = "Turning Angle",
+      title = paste0("(Relative) Turning Angle Distribution \n dt = ", dt, " secs")
+    ) + theme_minimal()
   }
 
   return(ang)
