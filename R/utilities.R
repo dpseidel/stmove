@@ -95,14 +95,14 @@ kalman <- function(df, warn = TRUE) {
 df_check <- function(df) {
   if (any(!(c("x", "y", "date") %in% names(df)))) {
     stop("stmove expects dataframes with columns 'x', 'y', and 'date', please include them.",
-         call. = FALSE
+      call. = FALSE
     )
   }
 
   if (diff(range(diff(df$date))) != 0 || any(is.na(df$x))) {
     stop("stmove expects dataframes with regular intervals and no missing values, consider
           using `regularize()` and `kalman()` to regularize your data.",
-         call. = FALSE
+      call. = FALSE
     )
   }
 }

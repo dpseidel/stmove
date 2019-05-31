@@ -1,7 +1,7 @@
 context("Report building")
 
 test_that("report builds with each option and in combination", {
-# how will i test this.
+  # how will i test this.
 })
 
 # build_report(AG195, "~/Desktop/",

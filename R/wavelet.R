@@ -14,7 +14,7 @@
 #' \donttest{
 #' dist_wave <- wavelet(AG195, stats = "dist", UseRaster = T)
 #' }
-#'
+#' 
 wavelet <- function(df, stats = c("dist", "rel.angle", "acf_dist", "acf_ang", "ccf"), plot = T, ...) {
   x <- rolling_stats(df)
 

@@ -71,7 +71,6 @@ rolling_stats <- function(df, n_roll = NULL) {
 #' interval_stats(AG195, type = "lunar")
 #' # for seasonal, include y-m-d formatted `seas` vector
 #' interval_stats(AG195, type = "seasonal", seas = c("2010-03-01", "2010-06-01", "2010-9-01"))
-#'
 interval_stats <- function(df, type = "diurnal", seas = NULL) {
   # Consider adapting this to do multiple ids at once or for full ltraj compatability
   df_check(df)
@@ -109,7 +108,7 @@ interval_stats <- function(df, type = "diurnal", seas = NULL) {
 
     interval_starts <- c(floor_date(traj$date[1], "1 day"), sort(c(full, new)), floor_date(traj$date[nrow(traj)], "1 day"))
 
-    if(length(unique(tail(interval_starts, 2))) == 1){
+    if (length(unique(tail(interval_starts, 2))) == 1) {
       interval_starts[length(interval_starts)] <- tail(interval_starts, 1) + lubridate::days(1)
     }
 
@@ -129,18 +128,18 @@ interval_stats <- function(df, type = "diurnal", seas = NULL) {
       )
     }
 
-  if (any(is.na(suppressWarnings(ymd(seas))))) {
-        stop("`seas` argument must be a character vector of dates with format year, month, day.",
-             call. = FALSE
-        )
-      }
+    if (any(is.na(suppressWarnings(ymd(seas))))) {
+      stop("`seas` argument must be a character vector of dates with format year, month, day.",
+        call. = FALSE
+      )
+    }
 
 
-    if( traj$date[1] < ymd(seas[1])){
+    if (traj$date[1] < ymd(seas[1])) {
       seas <- c(strftime(traj$date[1], "%Y-%m-%d"), seas)
     }
 
-    if(traj$date[nrow(traj)] > ymd(seas[length(seas)])){
+    if (traj$date[nrow(traj)] > ymd(seas[length(seas)])) {
       seas <- c(seas, strftime(traj$date[nrow(traj)] + lubridate::days(1), "%Y-%m-%d"))
     }
 

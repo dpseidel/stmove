@@ -14,7 +14,7 @@
 #' ss <- ss_dist(AG195)
 #' ta <- ta_dist(AG195)
 #' }
-#'
+#' 
 ss_dist <- function(x, plot = T) {
 
   # we could make these calculations ourselves without pulling in adehabitat
@@ -26,13 +26,13 @@ ss_dist <- function(x, plot = T) {
   dist <- traj[[1]]$dist
 
   if (plot == T) {
-    df = as.data.frame(dist)
+    df <- as.data.frame(dist)
 
-    p = ggplot() + geom_histogram(aes(x = dist), bins = 30) +
+    p <- ggplot() + geom_histogram(aes(x = dist), bins = 30) +
       labs(
-      x = "Step Length",
-      title = paste0("Step Length Distribution \n dt = ", dt, " secs")
-    ) + theme_minimal()
+        x = "Step Length",
+        title = paste0("Step Length Distribution \n dt = ", dt, " secs")
+      ) + theme_minimal()
 
     print(p)
   }
@@ -53,9 +53,10 @@ ta_dist <- function(x, plot = T) {
 
 
   if (plot == T) {
-    df = as.data.frame(ang)
-    p = ggplot(df) + geom_histogram(aes(
-      x = ang), binwidth = .1) + labs(
+    df <- as.data.frame(ang)
+    p <- ggplot(df) + geom_histogram(aes(
+      x = ang
+    ), binwidth = .1) + labs(
       x = "Turning Angle",
       title = paste0("Turning Angle Distribution \n dt = ", dt, " secs")
     ) + theme_minimal()
