@@ -2,7 +2,8 @@
 #'
 #' @inheritParams interval_stats
 #' @inheritParams rolling_stats
-#' @param path absolute file path for output .pdf
+#' @param path absolute file path for output .pdf, defaults to project working directory.
+#' see also \link[here]{here}.
 #' @param stats a character vector of stats to calculate, options include: "rolling",
 #' "diurnal", "lunar", and "seasonal"
 #' @param construct a character vector indicating which spacetime construction methods to use.
@@ -16,7 +17,7 @@
 #' \donttest{
 #' build_report(AG195, proj4 = "+proj=utm +zone=33 +south +datum=WGS84 +units=m +no_defs")
 #' }
-build_report <- function(df, path, proj4, stats = c("rolling", "diurnal"),
+build_report <- function(df, path = here::here(), proj4, stats = c("rolling", "diurnal"),
                          construct = c("klocoh"), seas = NULL, wavelet = NULL) {
   df_check(df)
 

@@ -4,13 +4,14 @@
 \alias{build_report}
 \title{Build a report with basic spatio-temporal movement computations}
 \usage{
-build_report(df, path, proj4, stats = c("rolling", "diurnal"),
-  construct = c("klocoh"), seas = NULL, wavelet = NULL)
+build_report(df, path = here::here(), proj4, stats = c("rolling",
+  "diurnal"), construct = c("klocoh"), seas = NULL, wavelet = NULL)
 }
 \arguments{
 \item{df}{a dataframe containing columns "x", "y", and "date"}
 
-\item{path}{absolute file path for output .pdf}
+\item{path}{absolute file path for output .pdf, defaults to project working directory.
+see also \link[here]{here}.}
 
 \item{proj4}{a character string indicating the proj.4 definition of the
 coordinate reference system defining the relocations}

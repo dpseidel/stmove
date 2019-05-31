@@ -15,7 +15,6 @@ params:
 
 ```{r setup, include = F}
 knitr::opts_chunk$set(
-  root.dir = tempdir(),
   collapse = TRUE,
   echo = FALSE,
   message = FALSE,
@@ -60,13 +59,19 @@ ta <- ta_dist(x = params$df)
 roll <<- rolling_stats(params$df)
 
 p1 <- ggplot(roll, aes(date, y = mean_dist)) +
-  geom_path(na.rm = T)
+  geom_path(na.rm = T) +
+  facet_wrap(~lubridate::month(datetime), scales = 
+                             "free_x") +
+    labs(title = "Mean Step Size on a Rolling interval" , 
+       y = "Mean Step Size (m)")+ theme_minimal()
 
 p2 <- ggplot(roll, aes(date, y = mean_ang)) +
-  geom_path(na.rm = T)
+  geom_path(na.rm = T) +
+    facet_wrap(~lubridate::month(datetime), scales = 
+                             "free_x") +
+    labs(title = "Mean Turning Angle on a Rolling interval" , 
+       y = "Mean Angle (radians)")  + theme_minimal()
 
-
-suppressMessages(p1 + p2 + plot_annotation("Mean Step Size & Turning Angle on a Rolling Interval"))
 
 suppressMessages(ggplot(roll, aes(date)) +
   geom_smooth(aes(y = acf_ang, color = "Relative Angle"), na.rm = T) +
@@ -75,7 +80,7 @@ suppressMessages(ggplot(roll, aes(date)) +
   ylab("Correlation") +
   ggtitle("Lag 1 Auto and Cross Correlations in Turning Angle & Step Size",
     subtitle = "Rolling Window"
-  ))
+  )) + theme_minimal()
 ```
 
 `r if (diurnal) '## Diurnal Cycle'`
@@ -94,6 +99,7 @@ plots <- purrr::map(
     ) + geom_point(na.rm = T, size = .3) +
       geom_smooth(na.rm = T) +
       xlab(NULL) +
+      theme_minimal() +
       theme(axis.text.x = element_text(angle = 25, vjust = .5))
 
     if (x == "acf_ang") {
@@ -131,6 +137,7 @@ plots <- purrr::map(
       # scale_x_continuous(breaks = 1:nlevels(lunar_stats$interval_start),
       #                   labels = levels(lunar_stats$interval_start)) +
       xlab(NULL) +
+      theme_minimal() +
       theme(axis.text.x = element_text(angle = 25, vjust = .5))
 
     if (x == "acf_ang") {

@@ -30,7 +30,6 @@ report_addin <- function() {
     miniUI::miniContentPanel(
       stableColumnLayout(
         shiny::textInput("df", "Data", value = defaultData),
-        shiny::textInput("path", "Output File Path"),
         shiny::textInput("proj4", "Projection (proj.4 string)")
       ),
       shiny::uiOutput("pending"),
@@ -98,11 +97,10 @@ report_addin <- function() {
     shiny::observeEvent(input$done, { # a couple things to think about -- how to specify data, output file?
       shiny::stopApp(build_report(
         df = reactive_data(),
-        path = input$path,
         stats = input$stats,
         construct = input$construct,
         proj4 = input$proj4,
-        seas = as.character(unlist(strsplit(input$seas,","))),
+        seas = as.character(unlist(strsplit(input$seas, ","))),
         wavelet = input$wavelet
       ))
     })

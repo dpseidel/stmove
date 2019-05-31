@@ -30,7 +30,8 @@ Suggests:
     rstudioapi,
     miniUI,
     shiny,
-    knitr
+    knitr,
+    here
 Imports:
     adehabitatLT,
     ggplot2,
