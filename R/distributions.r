@@ -28,7 +28,7 @@ ss_dist <- function(x, plot = T) {
   if (plot == T) {
     df = as.data.frame(dist)
 
-    p = ggplot() + geom_histogram(aes(x = dist)) +
+    p = ggplot() + geom_histogram(aes(x = dist), bins = 30) +
       labs(
       x = "Step Length",
       title = paste0("Step Length Distribution \n dt = ", dt, " secs")
@@ -55,7 +55,7 @@ ta_dist <- function(x, plot = T) {
   if (plot == T) {
     df = as.data.frame(ang)
     p = ggplot(df) + geom_histogram(aes(
-      x = ang)) + labs(
+      x = ang), binwidth = .1) + labs(
       x = "Turning Angle",
       title = paste0("Turning Angle Distribution \n dt = ", dt, " secs")
     ) + theme_minimal()
