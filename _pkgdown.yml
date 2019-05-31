@@ -24,7 +24,7 @@ reference:
 
 - title: "Utility Functions"
   desc: >
-    Functions for creating or formatting clean regular trajectories.
+    Functions for creating or formatting clean regular trajectories
   contents:
   - create_telemetry
   - regularize
@@ -32,6 +32,6 @@ reference:
 
 - title: "Data"
   desc: >
-    Two data files useful for examples
+    Three data files bundled for examples & vignettes
   contents:
   - starts_with("AG")
