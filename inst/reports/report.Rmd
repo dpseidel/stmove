@@ -58,20 +58,27 @@ ta <- ta_dist(x = params$df)
 ```{r eval = rolling, messages = F, fig.height = 4}
 roll <<- rolling_stats(params$df)
 
-p1 <- ggplot(roll, aes(date, y = mean_dist)) +
+ggplot(roll, aes(date, y = mean_dist)) +
   geom_path(na.rm = T) +
-  facet_wrap(~lubridate::month(datetime), scales = 
-                             "free_x") +
-    labs(title = "Mean Step Size on a Rolling interval" , 
-       y = "Mean Step Size (m)")+ theme_minimal()
+  facet_wrap(~ lubridate::month(date),
+    scales =
+      "free_x"
+  ) +
+  labs(
+    title = "Mean Step Size on a Rolling interval",
+    y = "Mean Step Size (m)"
+  ) + theme_minimal()
 
-p2 <- ggplot(roll, aes(date, y = mean_ang)) +
+ggplot(roll, aes(date, y = mean_ang)) +
   geom_path(na.rm = T) +
-    facet_wrap(~lubridate::month(datetime), scales = 
-                             "free_x") +
-    labs(title = "Mean Turning Angle on a Rolling interval" , 
-       y = "Mean Angle (radians)")  + theme_minimal()
-
+  facet_wrap(~ lubridate::month(date),
+    scales =
+      "free_x"
+  ) +
+  labs(
+    title = "Mean Turning Angle on a Rolling interval",
+    y = "Mean Angle (radians)"
+  ) + theme_minimal()
 
 suppressMessages(ggplot(roll, aes(date)) +
   geom_smooth(aes(y = acf_ang, color = "Relative Angle"), na.rm = T) +
