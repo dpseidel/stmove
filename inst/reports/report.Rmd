@@ -60,7 +60,7 @@ roll <<- rolling_stats(params$df)
 
 ggplot(roll, aes(date, y = mean_dist)) +
   geom_path(na.rm = T) +
-  facet_wrap(~ lubridate::month(date, label = TRUE),
+  facet_wrap(~ paste(lubridate::month(date, label = TRUE), lubridate::year(date)),
     scales =
       "free_x"
   ) +
@@ -68,12 +68,12 @@ ggplot(roll, aes(date, y = mean_dist)) +
     title = "Mean Step Size on a Rolling interval",
     y = "Mean Step Size (m)"
   ) + theme_minimal() +
-  scale_x_datetime(date_labels = "%d")
+  scale_x_datetime("Day of the month", date_labels = "%d")
 
 
 ggplot(roll, aes(date, y = mean_ang)) +
   geom_path(na.rm = T) +
-  facet_wrap(~ lubridate::month(date, label = TRUE),
+  facet_wrap(~ paste(lubridate::month(date, label = TRUE), lubridate::year(date)),
     scales =
       "free_x"
   ) +
@@ -81,7 +81,7 @@ ggplot(roll, aes(date, y = mean_ang)) +
     title = "Mean Turning Angle on a Rolling interval",
     y = "Mean Angle (radians)"
   ) + theme_minimal() +
-  scale_x_datetime(date_labels = "%d")
+  scale_x_datetime("Day of the month", date_labels = "%d")
 
 suppressMessages(ggplot(roll, aes(date)) +
   geom_smooth(aes(y = acf_ang, color = "Relative Angle"), na.rm = T) +
