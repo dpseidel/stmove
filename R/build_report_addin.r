@@ -55,7 +55,7 @@ report_addin <- function() {
           "Calculate which space use constructions?",
           c(
             "AKDE" = "akde",
-            "k-LoCoh" = "klocoh"
+            "k-LoCoH" = "klocoh"
           )
         ), shiny::checkboxGroupInput(
           "wavelet",
