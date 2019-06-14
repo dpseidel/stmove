@@ -28,7 +28,6 @@ interval_stats(AG195)
 interval_stats(AG195, type = "lunar")
 # for seasonal, include y-m-d formatted `seas` vector
 interval_stats(AG195, type = "seasonal", seas = c("2010-03-01", "2010-06-01", "2010-9-01"))
-
 }
 \seealso{
 \link[lunar]{lunar.phase}

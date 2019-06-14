@@ -12,11 +12,13 @@
 #' @export
 construct <- function(df, type = c("klocoh", "akde"), proj4) {
   # we may want to consider allowing user specification of some tlocoh arguments.
-
   # placeholders -- there is certainly a better way.
   lhs <- NULL
   UD <- NULL
 
+  if(!("id" %in% names(df))){
+    df$id <- "no_ID"
+  }
 
   if ("klocoh" %in% type && !requireNamespace("tlocoh", quietly = TRUE)) {
     stop("Package tlocoh must be installed to run klocoh.\n",
@@ -25,16 +27,11 @@ construct <- function(df, type = c("klocoh", "akde"), proj4) {
     )
   }
 
-  if ("akde" %in% type) {
-    message("Be aware, fitting an akde can take several minutes.")
-  }
-
-
   if (length(type) > 1) {
     par(mfrow = c(1, 2))
   }
 
-  # k - LoCoh
+  # k - LoCoH
   if ("klocoh" %in% tolower(type)) {
     dropNA <- na.omit(df)
     k <- round(sqrt(nrow(dropNA)))
@@ -56,6 +53,8 @@ construct <- function(df, type = c("klocoh", "akde"), proj4) {
 
   # ctmm
   if ("akde" %in% tolower(type)) {
+    message("Be aware, fitting an akde can take several minutes.")
+
     telm <- create_telemetry(df,
       proj4 = proj4
     )
