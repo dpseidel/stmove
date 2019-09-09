@@ -67,12 +67,11 @@ kalman <- function(df, warn = TRUE) {
 
   df$real <- !is.na(df$x)
 
-  # Replace NA values in longitude with Kalman Smoothed estimates
-  df$x <- imputeTS::na.kalman(df$x, model = "StructTS", smooth = TRUE)
-
-  # Replace NA values in latitude with Kalman Smoothed estimates
-  df$y <- imputeTS::na.kalman(df$y, model = "StructTS", smooth = TRUE)
-
+  temp_df <- df
+  # Replace NA values in longitude and latitude with Kalman Smoothed estimates
+  temp_df$x <- imputeTS::na.kalman(df$x, model = "StructTS", smooth = TRUE)
+  temp_df$y <- imputeTS::na.kalman(df$y, model = "StructTS", smooth = TRUE)
+  
   if (warn == TRUE) {
     if (sum(!df$real) / nrow(df) > .05) {
       warning(paste(
@@ -80,7 +79,15 @@ kalman <- function(df, warn = TRUE) {
         "% of values along your trajectory. We advise interpolating less than 5 %."
       ), call. = FALSE)
     }
+  
+    print("Running warning protocol; Kalman smoothing failed to converge using structural time series modeling. Reverting to auto ARIMA approach")
+    # Replace NA values in longitude and latitude using auto.arima approach
+    temp_df$x <- imputeTS::na.kalman(df$x, model = "auto.arima", smooth = TRUE)
+    temp_df$y <- imputeTS::na.kalman(df$y, model = "auto.arima", smooth = TRUE)
   }
+  
+  df$x <- temp_df$x
+  df$y <- temp_df$y
 
   return(df)
 }
