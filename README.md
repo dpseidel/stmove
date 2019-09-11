@@ -20,6 +20,25 @@ series” which consists of a sequence of points `(x, y, time)` where
 `time = 0, 1, 2, 3,..., T` and all missing points have been interpolated
 and filled in.
 
+For a detailed review of stmove’s motivation and functionality, please
+see [our preprint available on
+Biorxiv](http://biorxiv.org/cgi/content/short/758987v1).
+
+## Installation
+
+stmove is in active development and not yet available on CRAN. To
+download the current version of the package use the following code:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("dpseidel/stmove")
+```
+
+If you encounter bugs or have features you would like to see
+incorporated in future version of stmove, please open an issue.
+
+## Usage
+
 The primary function of this package is `build_report` which, given a
 clean regularized trajectory, will deliver a .Rmd and .pdf report
 including the results of the following computations.
@@ -64,9 +83,3 @@ address questions of interest (e.g., GLM models of location and
 landscape, HMM modeling, step section analysis), but this package
 strives to set a standard for what is minimally needed before embarking
 on such analyses.
-
-## Installation
-
-stmove is in active development and is not yet available for public
-download. If you would like to be a beta tester, please contact the
-authors.

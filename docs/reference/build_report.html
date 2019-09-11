@@ -125,8 +125,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>build_report</span>(<span class='no'>df</span>, <span class='no'>path</span>, <span class='no'>proj4</span>, <span class='kw'>stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"rolling"</span>, <span class='st'>"diurnal"</span>),
-  <span class='kw'>construct</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"klocoh"</span>), <span class='kw'>seas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>wavelet</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>build_report</span>(<span class='no'>df</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw pkg'>here</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/here/topics/here'>here</a></span>(), <span class='no'>proj4</span>, <span class='kw'>stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"rolling"</span>,
+  <span class='st'>"diurnal"</span>), <span class='kw'>construct</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"klocoh"</span>), <span class='kw'>seas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>wavelet</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,7 +137,8 @@
     </tr>
     <tr>
       <th>path</th>
-      <td><p>absolute file path for output .pdf</p></td>
+      <td><p>absolute file path for output .pdf, defaults to project working directory.
+see also <a href='https://www.rdocumentation.org/packages/here/topics/here'>here</a>.</p></td>
     </tr>
     <tr>
       <th>proj4</th>
@@ -168,7 +169,21 @@ options in "dist", "rel.angle", "acf_dist", "acf_ang", and "ccf".</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>build_report</span>(<span class='no'>AG195</span>, <span class='kw'>proj4</span> <span class='kw'>=</span> <span class='st'>"+proj=utm +zone=33 +south +datum=WGS84 +units=m +no_defs"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in file.path(path, "report.pdf"): argument "path" is missing, with no default</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>build_report</span>(<span class='no'>AG195</span>, <span class='kw'>proj4</span> <span class='kw'>=</span> <span class='st'>"+proj=utm +zone=33 +south +datum=WGS84 +units=m +no_defs"</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>processing file: report.Rmd</span></div><div class='output co'>#&gt;   |                                                                         |                                                                 |   0%  |                                                                         |...                                                              |   4%
+#&gt;    inline R code fragments
+#&gt; 
+#&gt;   |                                                                         |......                                                           |   9%
+#&gt; label: setup (with options) 
+#&gt; List of 1
+#&gt;  $ include: symbol F
+#&gt; 
+#&gt;   |                                                                         |........                                                         |  13%
+#&gt;   ordinary text without R code
+#&gt; 
+#&gt;   |                                                                         |...........                                                      |  17%
+#&gt; label: unnamed-chunk-1</div><div class='output co'>#&gt; <span class='message'>Quitting from lines 40-42 (report.Rmd) </span></div><div class='output co'>#&gt; <span class='error'>Error in ggplot(params$df, aes(x, y)): could not find function "ggplot"</span></div><div class='output co'>#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

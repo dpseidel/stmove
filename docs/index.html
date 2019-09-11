@@ -93,6 +93,18 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#stmove" class="anchor"></a>stmove</h1></div>
 <p>The goal of stmove is to make more accessible and transparent standard spatio-temporal approaches to interpreting movement data before getting into more challenging aspects of deconstructing movement trajectories. Analyses in this package expect “clean, regular, movement data time series” which consists of a sequence of points <code>(x, y, time)</code> where <code>time = 0, 1, 2, 3,..., T</code> and all missing points have been interpolated and filled in.</p>
+<p>For a detailed review of stmove’s motivation and functionality, please see <a href="http://biorxiv.org/cgi/content/short/758987v1">our preprint available on Biorxiv</a>.</p>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>stmove is in active development and not yet available on CRAN. To download the current version of the package use the following code:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># install.packages("remotes")</span></a>
+<a class="sourceLine" id="cb1-2" title="2">remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"dpseidel/stmove"</span>)</a></code></pre></div>
+<p>If you encounter bugs or have features you would like to see incorporated in future version of stmove, please open an issue.</p>
+</div>
+<div id="usage" class="section level2">
+<h2 class="hasAnchor">
+<a href="#usage" class="anchor"></a>Usage</h2>
 <p>The primary function of this package is <code>build_report</code> which, given a clean regularized trajectory, will deliver a .Rmd and .pdf report including the results of the following computations.</p>
 <div id="basic-path-distributions" class="section level3">
 <h3 class="hasAnchor">
@@ -135,10 +147,6 @@
 </ol>
 <p>Once these are done, one can then pursue various kinds of analysis that address questions of interest (e.g., GLM models of location and landscape, HMM modeling, step section analysis), but this package strives to set a standard for what is minimally needed before embarking on such analyses.</p>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>stmove is in active development and is not yet available for public download. If you would like to be a beta tester, please contact the authors.</p>
 </div>
 </div>
   </div>
