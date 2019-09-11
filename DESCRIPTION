@@ -25,7 +25,7 @@ Suggests:
     tlocoh,
     testthat,
     vdiffr (>= 0.3.0),
-    imputeTS,
+    imputeTS (>= 3.0),
     covr,
     rstudioapi,
     miniUI,

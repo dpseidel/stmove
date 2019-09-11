@@ -68,10 +68,10 @@ kalman <- function(df, warn = TRUE) {
   df$real <- !is.na(df$x)
 
   # Replace NA values in longitude with Kalman Smoothed estimates
-  df$x <- imputeTS::na.kalman(df$x, model = "StructTS", smooth = TRUE)
+  df$x <- imputeTS::na_kalman(df$x, model = "StructTS", smooth = TRUE)
 
   # Replace NA values in latitude with Kalman Smoothed estimates
-  df$y <- imputeTS::na.kalman(df$y, model = "StructTS", smooth = TRUE)
+  df$y <- imputeTS::na_kalman(df$y, model = "StructTS", smooth = TRUE)
 
   if (warn == TRUE) {
     if (sum(!df$real) / nrow(df) > .05) {
